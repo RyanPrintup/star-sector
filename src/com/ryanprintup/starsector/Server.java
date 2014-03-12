@@ -55,10 +55,12 @@ public class Server implements Runnable
 		starboundServer.setPort(21020);
 		console.info("Starbound bounded to port " + config.getStarboundPort());
 		
-		//if (!starboundServer.start()) {
-			//console.error("Error starting Starbound server");
-			//return;
-		//}
+		if (!starboundServer.start()) {
+			console.error("Error starting Starbound server");
+			return;
+		}
+		console.info("Waiting for starbound server to startup...");
+		waitForServerStartup();
 		console.info("Starbound server started");
 		
 		try {
@@ -90,7 +92,7 @@ public class Server implements Runnable
 					client.close();
 				} else {
 					console.info(client.getInetAddress().getHostAddress() + " has connected");
-					//addPlayer(new Client(client, new Player("Bob", "1")));
+					addPlayer(new Player(client));
 				}
 			} catch (IOException e) {
 				console.error("Client attempted to join but failed");
@@ -105,12 +107,14 @@ public class Server implements Runnable
 		
 		running = false;
 		
-		console.info("Disconnecting clients");
-		for (Player p : players) {
-			//p.disconnect();
-		}
-
-		console.info("Players disconnected");
+		if (getPlayerCount() > 0) {
+			console.info("Disconnecting players");
+			for (Player p : players) {
+				p.disconnect();
+			}
+			
+			console.info("Players disconnected");
+		}	
 		
 		starboundServer.stop();
 		console.info("Starbound server stopped");
@@ -140,6 +144,35 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * The starbound server takes time to load the world
+	 * and other important files. In order to see when it is
+	 * ready we keep trying to connect to the server until a
+	 * connection succeeds.
+	 */
+	private void waitForServerStartup()
+	{
+		Socket s;
+		
+		while (true) {
+			try {
+				s = new Socket("127.0.0.1", config.getStarboundPort());
+				
+				break;
+			} catch (IOException e) {
+				try {
+					Thread.sleep(2500);
+				} catch (InterruptedException e1) {
+				}
+			}
+		}
+		
+		try {
+			s.close();
+		} catch (IOException e) {
+		}
+	}
+	
 	public void sendMessage(String message)
 	{
 		for (Player p : players) {
@@ -151,7 +184,7 @@ public class Server implements Runnable
 	
 	public void addPlayer(Player p)
 	{
-		if (emptySlot() && findPlayer(p) == null) {
+		if (emptySlot() /*&& findPlayer(p) == null*/) {
 			players.add(p);
 		}
 	}
@@ -165,8 +198,10 @@ public class Server implements Runnable
 	
 	public Player findPlayer(String name)
 	{
+		name = name.toLowerCase();
+		
 		for (Player p : players) {
-			if (p.getName() == name) {
+			if (p.getName().toLowerCase().equals(name)) {
 				return p;
 			}
 		}
@@ -201,5 +236,10 @@ public class Server implements Runnable
 	public Config getConfig()
 	{
 		return config;
+	}
+	
+	public boolean isRunning()
+	{
+		return running;
 	}
 }
