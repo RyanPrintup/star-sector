@@ -2,10 +2,11 @@ package com.ryanprintup.starsector.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+
+import com.ryanprintup.starsector.Server;
 
 public class Config {
 	
@@ -18,6 +19,8 @@ public class Config {
 	private static final String SERVER_PORT_DEFAULT = "21025";
 	private static final String STARBOUND_PORT_DEFAULT = "21020";
 	private static final String MAX_CLIENTS_DEFAULT = "20";
+	
+	private static Server server;
 	
 	private String serverName;
 	private String consoleName;
@@ -33,7 +36,6 @@ public class Config {
 	
 	private void check() throws IOException
 	{
-		// This method sucks
 		boolean rewrite = false;
 		
 		if (config.getProperty("server-name") == null) {
@@ -105,6 +107,16 @@ public class Config {
 		config.setProperty("max-clients", MAX_CLIENTS_DEFAULT);
 		
 		config.store(new FileOutputStream(configFile), null);
+	}
+	
+	public void setServerInstance(Server server)
+	{
+		this.server = server;
+	}
+	
+	public static Server getServerInstance()
+	{
+		return server;
 	}
 	
 	public String getServerName()
