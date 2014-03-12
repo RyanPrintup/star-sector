@@ -11,7 +11,7 @@ public abstract class Command
 	protected static Server server = Config.getServerInstance();
 	protected static CommandList commandList = new CommandList();
 	
-	public void use(Player player, String command) {
+	public final void use(Player player, String command) {
 		if (player == null) {
 			if (!allowConsole()) {
 				console.write("This command can't be used in the console!");
@@ -35,7 +35,7 @@ public abstract class Command
 		}
 	}
 	
-	public void help(Player player) {
+	public final void help(Player player) {
 		if (player == null) {
 			console.write(getHelp());
 		} else {
