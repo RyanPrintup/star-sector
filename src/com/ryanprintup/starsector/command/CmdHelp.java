@@ -7,17 +7,20 @@ public class CmdHelp extends Command
 	@Override
 	public void onUse(Player player, String args)
 	{
-		console.write("\n-----Help-----");
 		if (player == null) {
-			for (int c = 0; c < commandList.getSize() - 1; c++) {
+			console.write("\n-----Help-----");
+			
+			for (int c = 0; c < commandList.getSize(); c++) {
 				if (commandList.getCommand(c).allowConsole()) {
 					console.write(commandList.getCommand(c).getHelp());
 				}
 			}
 		} else {
-			for (int c = 0; c < commandList.getSize() - 1; c++) {
+			player.sendMessage("-----Help-----");
+			
+			for (int c = 0; c < commandList.getSize(); c++) {
 				if (commandList.getCommand(c).allowPlayer()) {
-					console.write("/" + commandList.getCommand(c).getHelp());
+					player.sendMessage("/" + commandList.getCommand(c).getHelp());
 				}
 			}
 		}
