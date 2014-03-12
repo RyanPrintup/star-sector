@@ -29,15 +29,18 @@ public class Connection implements Runnable
 	public void run()
 	{
 		connection = true;
+		byte[] buffer = new byte[8192];
 		
 		try {
 			while (connection) {
-				int bytes = inputStream.read();
+				int bytes = inputStream.read(buffer);
 				if (bytes == -1) {
 					break;
 				}
 				
-				outputStream.write(bytes);
+				packetProcessor.process(buffer);
+				
+				outputStream.write(buffer, 0, bytes);
 				outputStream.flush();
 			}
 		} catch (IOException e) {
