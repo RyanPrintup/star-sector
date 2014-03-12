@@ -9,11 +9,7 @@ public class CmdKick extends Command
 	{
 		Player who = server.findPlayer(args);
 		if (who == null) {
-			if (player == null) {
-				console.write("Could not find specified player.");
-			} else {
-				player.sendMessage("Could not find specified player.");
-			}
+			console.write("Could not find specified player.");
 			
 			return;
 		}
@@ -43,7 +39,7 @@ public class CmdKick extends Command
 	@Override
 	public boolean allowPlayer() 
 	{
-		return true;
+		return false;
 	}
 
 	@Override
