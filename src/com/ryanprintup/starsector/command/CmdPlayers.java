@@ -13,7 +13,7 @@ public class CmdPlayers extends Command
 			players += "none";
 		} else {
 			for (int p = 0; p < server.getPlayerCount(); p++) {
-				players += server.getPlayer(p);
+				players += server.getPlayer(p).getName();
 				
 				if (p != server.getPlayerCount()) {
 					players += ", ";
