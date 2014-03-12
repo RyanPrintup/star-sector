@@ -14,7 +14,7 @@ public class CmdSay extends Command
 			return;
 		}
 		
-		server.sendMessage(message);
+		server.sendMessage(server.getConfig().getConsoleName() + ": " + message);
 	}
 
 	@Override
