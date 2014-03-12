@@ -3,7 +3,10 @@ package com.ryanprintup.starsector;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.ryanprintup.starsector.command.CommandList;
 import com.ryanprintup.starsector.starbound.StarboundServer;
 import com.ryanprintup.starsector.util.Config;
 import com.ryanprintup.starsector.util.Console;
@@ -15,32 +18,29 @@ public class Server implements Runnable
 	private Console console = Console.getInstance();
 	private Config config = new Config();
 	
-	private StarboundServer starboundServer = new StarboundServer();
+	private StarboundServer starboundServer;
 	
-	private Client clients[];
+	private List<Player> players = new ArrayList<Player>();
 	
 	private ServerSocket serverSocket;
 	private Thread server = new Thread(this);
 	private boolean running = false;
+	
+	public Server()
+	{
+		config.setServerInstance(this);
+		CommandList.initDefaults();
+		
+		// Initiated here because the server instance needs to be set first
+		starboundServer = new StarboundServer();
+	}
 	
 	public synchronized void start()
 	{
 		console.info("Starting server....");
 		console.info("You are running Star Sector " + STAR_SECTOR_VERSION);
 
-		if (!config.exists()) {
-			console.info("Generating config file...");
-			
-			try {
-				config.generate();
-			} catch (IOException e) {
-				console.error("Error generating config file");
-				e.printStackTrace();
-				return;
-			}
-			
-			console.info("Config file generated");
-		}
+		checkForFiles();
 		
 		try {
 			config.load();
@@ -60,8 +60,6 @@ public class Server implements Runnable
 			//return;
 		//}
 		console.info("Starbound server started");
-		
-		clients = new Client[config.getMaxClients()];
 		
 		try {
 			serverSocket = new ServerSocket(config.getServerPort(), config.getMaxClients());
@@ -87,23 +85,18 @@ public class Server implements Runnable
 			try {
 				client = serverSocket.accept();
 				
-				if (clients[clients.length - 1] != null) {
+				if (!emptySlot()) {
 					console.info(client.getInetAddress().getHostAddress() + " attempted to join but the server is full");
 					client.close();
 				} else {
 					console.info(client.getInetAddress().getHostAddress() + " has connected");
-					clients[clients.length - 1] = new Client(client, new Player("Bob", "1"));
+					//addPlayer(new Client(client, new Player("Bob", "1")));
 				}
 			} catch (IOException e) {
 				console.error("Client attempted to join but failed");
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	private void onPlayerDisconnect()
-	{
-		
 	}
 	
 	public synchronized void stop()
@@ -113,11 +106,11 @@ public class Server implements Runnable
 		running = false;
 		
 		console.info("Disconnecting clients");
-		for (Client c : clients) {
-			c.disconnect();
+		for (Player p : players) {
+			//p.disconnect();
 		}
-		clients = null;
-		console.info("Clients disconnected");
+
+		console.info("Players disconnected");
 		
 		starboundServer.stop();
 		console.info("Starbound server stopped");
@@ -129,5 +122,84 @@ public class Server implements Runnable
 		}
 
 		console.info("Server stopped");
+	}
+	
+	private void checkForFiles()
+	{
+		if (!config.exists()) {
+			console.info("Config file not found.");
+			console.info("Generating config file");
+			
+			try {
+				config.generate();
+				
+				console.info("Config file generated.");
+			} catch (IOException e) {
+				console.error("Error generating config file");
+			}
+		}
+	}
+	
+	public void sendMessage(String message)
+	{
+		for (Player p : players) {
+			p.sendMessage(message);
+		}
+		
+		console.write(message);
+	}
+	
+	public void addPlayer(Player p)
+	{
+		if (emptySlot() && findPlayer(p) == null) {
+			players.add(p);
+		}
+	}
+	
+	public void removePlayer(Player p)
+	{
+		if (findPlayer(p) != null) {
+			players.remove(p);
+		}
+	}
+	
+	public Player findPlayer(String name)
+	{
+		for (Player p : players) {
+			if (p.getName() == name) {
+				return p;
+			}
+		}
+		
+		return null;
+	}
+	
+	public Player findPlayer(Player p)
+	{
+		return findPlayer(p.getName());
+	}
+	
+	public Player getPlayer(int index)
+	{
+		if (index > players.size()) {
+			return null;
+		}
+		
+		return players.get(index);
+	}
+	
+	public int getPlayerCount()
+	{
+		return players.size();
+	}
+	
+	public boolean emptySlot()
+	{
+		return players.size() < config.getMaxClients();
+	}
+	
+	public Config getConfig()
+	{
+		return config;
 	}
 }
