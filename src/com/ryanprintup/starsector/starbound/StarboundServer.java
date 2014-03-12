@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.ryanprintup.starsector.Server;
+import com.ryanprintup.starsector.util.Config;
 import com.ryanprintup.starsector.util.Console;
 
 public class StarboundServer
@@ -14,8 +16,9 @@ public class StarboundServer
 	private static final File config = new File("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Starbound\\starbound.config");
 	
 	private Console console = Console.getInstance();
+	private Server server = Config.getServerInstance();
 	
-	private int port;
+	private int port = server.getConfig().getStarboundPort();
 	private Process serverProcess;
 	
 	public boolean start()
