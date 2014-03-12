@@ -2,6 +2,8 @@ package com.ryanprintup.starsector.util;
 
 import java.util.Scanner;
 
+import com.ryanprintup.starsector.command.CommandList;
+
 public class Console
 {
 	private static Console INSTANCE;
@@ -46,7 +48,10 @@ public class Console
 
 class ConsoleInput implements Runnable
 {
+	//private Console console = Console.getInstance();
+	
 	private Scanner scanner = new Scanner(System.in);
+	private CommandList commandList = new CommandList();
 	
 	@Override
 	public void run()
@@ -59,6 +64,10 @@ class ConsoleInput implements Runnable
 	
 	private void handleInput(String input)
 	{
-		// To-do: Parse input for command, use command if valid
+		String command = input.split(" ")[0];
+		
+		if (commandList.isCommand(command)) {
+			commandList.getCommand(command).use(null, input);
+		}
 	}
 }
