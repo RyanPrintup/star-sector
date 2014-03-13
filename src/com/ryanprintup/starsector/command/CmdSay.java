@@ -4,7 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdSay extends Command
 {
-
+	public CmdSay()
+	{
+		name = "say";
+		shortcut = "say";
+		allowConsole = true;
+		allowPlayer = false;
+		help = "say <message> - Send a message to all players";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -16,35 +24,4 @@ public class CmdSay extends Command
 		
 		server.sendMessage(server.getConfig().getConsoleName() + ": " + message);
 	}
-
-	@Override
-	public String getName()
-	{
-		return "say";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "say";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return false;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "say <message> - Send a message to all the players.";
-	}
-
 }

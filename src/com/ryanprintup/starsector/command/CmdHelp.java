@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdHelp extends Command
 {
+	public CmdHelp()
+	{
+		name = "help";
+		shortcut = "help";
+		allowConsole = true;
+		allowPlayer = true;
+		help = "help - Shows a list of commands";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -24,35 +33,5 @@ public class CmdHelp extends Command
 				}
 			}
 		}
-	}
-
-	@Override
-	public String getName()
-	{
-		return "help";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "help";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return true;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "help - Shows a list of useable commands.";
 	}
 }

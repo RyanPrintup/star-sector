@@ -11,6 +11,12 @@ public abstract class Command
 	protected static Server server = Config.getServerInstance();
 	protected static CommandList commandList = new CommandList();
 	
+	protected String name;
+	protected String shortcut;
+	protected boolean allowConsole;
+	protected boolean allowPlayer;
+	protected String help;
+	
 	public final void use(Player player, String command) {
 		if (player == null) {
 			if (!allowConsole()) {
@@ -35,6 +41,8 @@ public abstract class Command
 		}
 	}
 	
+	public abstract void onUse(Player player, String args);
+	
 	public final void help(Player player) {
 		if (player == null) {
 			console.write(getHelp());
@@ -43,11 +51,27 @@ public abstract class Command
 		}
 	}
 	
-	public abstract void onUse(Player player, String args);
-	
-	public abstract String getName();
-	public abstract String getShortcut();
-	public abstract boolean allowConsole();
-	public abstract boolean allowPlayer();
-	public abstract String getHelp();
+	public final String getName() {
+		return name;
+	}
+
+	public final String getShortcut()
+	{
+		return shortcut;
+	}
+
+	public final boolean allowConsole()
+	{
+		return allowConsole;
+	}
+
+	public final boolean allowPlayer()
+	{
+		return allowPlayer;
+	}
+
+	public final String getHelp()
+	{
+		return help;
+	}
 }

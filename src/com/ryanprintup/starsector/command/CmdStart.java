@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdStart extends Command
 {
+	public CmdStart()
+	{
+		name = "start";
+		shortcut = "start";
+		allowConsole = true;
+		allowPlayer = false;
+		help = "start - Start the server";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -12,35 +21,5 @@ public class CmdStart extends Command
 		} else {
 			server.start();
 		}
-	}
-
-	@Override
-	public String getName()
-	{
-		return "start";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "start";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return false;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "start - Starts the server";
 	}
 }

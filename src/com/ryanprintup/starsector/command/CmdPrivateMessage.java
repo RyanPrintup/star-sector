@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdPrivateMessage extends Command
 {
+	public CmdPrivateMessage()
+	{
+		name = "message";
+		shortcut = "pm";
+		allowConsole = true;
+		allowPlayer = false;
+		help = "message <player> <message> - Sends a private message to <player>";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -20,35 +29,5 @@ public class CmdPrivateMessage extends Command
 		}
 		
 		who.sendMessage("[PM] " + player.getName() + ": " + message);
-	}
-
-	@Override
-	public String getName()
-	{
-		return "message";
-	}
-	
-	@Override
-	public String getShortcut()
-	{
-		return "pm";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return true;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "message <player> <message> - Send a private message to <player>";
 	}
 }

@@ -58,6 +58,7 @@ public class CommandList
 			commands.add(new CmdSay());
 			commands.add(new CmdStart());
 			commands.add(new CmdPrivateMessage());
+			commands.add(new CmdRestart());
 			commands.add(new CmdPlayers());
 			commands.add(new CmdStop());
 		}

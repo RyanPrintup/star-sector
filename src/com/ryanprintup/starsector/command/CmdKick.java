@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdKick extends Command
 {
+	public CmdKick()
+	{
+		name = "kick";
+		shortcut = "kick";
+		allowConsole = true;
+		allowPlayer = false;
+		help = "kick <player> - Kicks <player> from the server";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -16,35 +25,5 @@ public class CmdKick extends Command
 		
 		who.disconnect();
 		server.sendMessage(who.getName() + "  was kicked from the server!");
-	}
-
-	@Override
-	public String getName()
-	{
-		return "kick";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "kick";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer() 
-	{
-		return false;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "kick <player> - Kicks <player> from the server.";
 	}
 }

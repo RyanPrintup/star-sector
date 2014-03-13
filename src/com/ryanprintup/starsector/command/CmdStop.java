@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdStop extends Command
 {
+	public CmdStop()
+	{
+		name = "stop";
+		shortcut = "stop";
+		allowConsole = true;
+		allowPlayer = false;
+		help = "stop - Stops the server";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -12,35 +21,5 @@ public class CmdStop extends Command
 		} else {
 			console.write("Server already stopped");
 		}
-	}
-
-	@Override
-	public String getName()
-	{
-		return "stop";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "stop";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return false;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "stop - Stops the server";
 	}
 }

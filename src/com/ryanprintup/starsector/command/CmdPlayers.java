@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdPlayers extends Command
 {
+	public CmdPlayers()
+	{
+		name = "players";
+		shortcut = "list";
+		allowConsole = true;
+		allowPlayer = true;
+		help = "players - Shows a list of online players";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -26,35 +35,5 @@ public class CmdPlayers extends Command
 		} else {
 			player.sendMessage(players);
 		}
-	}
-
-	@Override
-	public String getName()
-	{
-		return "players";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "players";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return true;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "players - Show a list of online players.";
 	}
 }

@@ -4,6 +4,15 @@ import com.ryanprintup.starsector.Player;
 
 public class CmdIp extends Command
 {
+	public CmdIp()
+	{
+		name = "ip";
+		shortcut = "ip";
+		allowConsole = true;
+		allowPlayer = false;
+		help = "ip <player> - Shows <player>'s IP address";
+	}
+	
 	@Override
 	public void onUse(Player player, String args)
 	{
@@ -14,35 +23,5 @@ public class CmdIp extends Command
 		}
 		
 		console.write(who.getName() + " ip address is: " + who.getIp());
-	}
-
-	@Override
-	public String getName()
-	{
-		return "ip";
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return "ip";
-	}
-
-	@Override
-	public boolean allowConsole()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean allowPlayer()
-	{
-		return false;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "ip <player> - Get <player>'s ip address";
 	}
 }
