@@ -10,7 +10,7 @@ public class CmdRestart extends Command
 		shortcut = "restart";
 		allowConsole = true;
 		allowPlayer = false;
-		help = "restart - Restarts the server with a 15 second countdown";
+		help = "restart <seconds> - Restarts the server. Optional countdown of <seconds>";
 	}
 	
 	@Override
@@ -23,11 +23,27 @@ public class CmdRestart extends Command
 		
 		server.sendMessage("Restarting server");
 		
-		for (int s = 15; s > 0; s--) {
-			server.sendMessage(s + " seconds");
+		if (args != null) {
+			int seconds;
+			
 			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
+				seconds = Integer.parseInt(args);
+			} catch (NumberFormatException e) {
+				console.write("Invalid number, restarting instantly.");
+				seconds = 0;
+			}
+			
+			if (seconds > 0) {
+				for (; seconds > 0; seconds--) {
+					if (seconds <= 10 || seconds % 15 == 0) {
+						server.sendMessage(seconds + " seconds");
+					}
+					
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
+				}
 			}
 		}
 		
