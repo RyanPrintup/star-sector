@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 
 import com.ryanprintup.starsector.Server;
 import com.ryanprintup.starsector.util.Config;
@@ -18,12 +19,21 @@ public class StarboundServer
 	private Console console = Console.getInstance();
 	private Server server = Config.getServerInstance();
 	
-	private int port = server.getConfig().getStarboundPort();
+	private int port;
+	private String serverName;
+	
+	// Used to avoid connecting directly to the Starbound server and bypassing Star Sector
+	private String serverPassword;
+	
 	private Process serverProcess;
 	
 	public boolean start()
 	{
-		editStarboundPort();
+		port = server.getConfig().getStarboundPort();
+		serverName = server.getConfig().getServerName();
+		serverPassword = generatePassword();
+		
+		editStarboundSettings();
 		
 		/*ProcessBuilder pb;
 		File starboundServerPath;
@@ -72,7 +82,7 @@ public class StarboundServer
 		
 	}
 	
-	private void editStarboundPort()
+	private void editStarboundSettings()
 	{
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(config));
@@ -81,11 +91,16 @@ public class StarboundServer
 			String line = br.readLine();
 			while (line != null) {
 				if (line.contains("gamePort")) {
-					sb.append("  \"gamePort\" : " + port + ",\r\n");
+					sb.append("  \"gamePort\" : " + port + ",");
+				} else if (line.contains("serverName")) {
+					sb.append("  \"serverName\" : \"" + serverName + "\",");
+				} else if (line.contains("serverPasswords")) {
+					//sb.append("  \"serverPasswords\" : [ \"" + serverPassword + "\" ],");
 				} else {
-					sb.append(line + "\r\n");
+					sb.append(line);
 				}
 				
+				sb.append("\r\n");
 				line = br.readLine();
 			}
 			
@@ -96,6 +111,20 @@ public class StarboundServer
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String generatePassword()
+	{
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijklmnopqrstuvwxyz1234567890";
+		
+		Random random = new Random();
+		StringBuilder password = new StringBuilder();
+
+		for (int c = 0; c < 30; c++) {
+			password.append(chars.charAt(random.nextInt(chars.length() - 0)));
+		}
+		
+		return password.toString();
 	}
 	
 	public void setPort(int port)
