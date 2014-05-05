@@ -1,8 +1,5 @@
 package com.ryanprintup.starsector.util;
 
-import java.io.File;
-
-import com.ryanprintup.starsector.exceptions.InvalidFilePathException;
 
 public final class Validate
 {
@@ -13,10 +10,12 @@ public final class Validate
 	{
 	}
 	
-	public void validFilePath(File file) throws InvalidFilePathException
+	public static <T> boolean isNull(T field)
 	{
-		if (file.exists()) {
-			
+		if (field == null) {
+			return true;
 		}
+		
+		return false;
 	}
 }

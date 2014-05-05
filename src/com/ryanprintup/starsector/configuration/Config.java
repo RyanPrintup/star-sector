@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.ryanprintup.starsector.util.StringUtils;
+import com.ryanprintup.starsector.util.Validate;
 
 public class Config {
 	
@@ -29,35 +30,35 @@ public class Config {
 	{
 		boolean rewrite = false;
 		
-		if (config.getProperty("server-name") == null) {
+		if (Validate.isNull(config.getProperty("server-name"))) {
 			config.setProperty("server-name", ConfigDefaults.SERVER_NAME.getValue());
 			rewrite = true;
 		} else {
 			config.setProperty("server-name", config.getProperty("server-name"));
 		}
 		
-		if (config.getProperty("console-name") == null) {
+		if (Validate.isNull(config.getProperty("console-name"))) {
 			config.setProperty("console-name", ConfigDefaults.CONSOLE_NAME.getValue());
 			rewrite = true;
 		} else {
 			config.setProperty("console-name", config.getProperty("console-name"));
 		}
 		
-		if (config.getProperty("star-sector-port") == null) {
+		if (Validate.isNull(config.getProperty("star-sector-port"))) {
 			config.setProperty("star-sector-port", ConfigDefaults.SERVER_PORT.getValue());
 			rewrite = true;
 		} else {
 			config.setProperty("star-sector-port", config.getProperty("star-sector-port"));
 		}
 		
-		if (config.getProperty("starbound-port") == null) {
+		if (Validate.isNull(config.getProperty("starbound-port"))) {
 			config.setProperty("starbound-port", ConfigDefaults.STARBOUND_PORT.getValue());
 			rewrite = true;
 		} else {
 			config.setProperty("starbound-port", config.getProperty("starbound-port"));
 		}
 		
-		if (config.getProperty("max-clients") == null) {
+		if (Validate.isNull(config.getProperty("max-clients"))) {
 			config.setProperty("max-clients", ConfigDefaults.MAX_CLIENTS.getValue());
 			rewrite = true;
 		} else {
