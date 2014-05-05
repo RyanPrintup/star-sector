@@ -5,24 +5,13 @@ import java.util.Scanner;
 import com.ryanprintup.starsector.command.CommandList;
 
 public class Console
-{
-	private static Console INSTANCE;
-	
+{	
 	private Logger logger = new Logger();
 	private Thread input = new Thread(new ConsoleInput());
 	
-	private Console()
+	public Console()
 	{
 		input.start();
-	}
-	
-	public static Console getInstance()
-	{
-		if (INSTANCE == null) {
-			INSTANCE = new Console();
-		}
-		
-		return INSTANCE;
 	}
 	
 	public void warn(String warning)
