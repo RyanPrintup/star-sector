@@ -12,7 +12,7 @@ import java.util.zip.Inflater;
  * Source: http://thiscouldbebetter.wordpress.com/2011/08/26/compressing-and-uncompressing-data-in-java-using-zlib/
  * Modified By: Ryan Printup
  */
-public class ZlibCompressor
+public final class ZlibCompressor
 {
 	/**
 	 * Starbound uses Zlib compression on data
@@ -20,7 +20,14 @@ public class ZlibCompressor
 	 * and compress it to send it
 	 */
 	
-	public byte[] compress(final byte[] bytesToCompress) {
+	/**
+	 * Avoid instantiation of static class
+	 */
+	private ZlibCompressor()
+	{
+	}
+	
+	public static byte[] compress(final byte[] bytesToCompress) {
 		Deflater deflater = new Deflater();
 		deflater.setInput(bytesToCompress);
 		deflater.finish();
@@ -33,10 +40,10 @@ public class ZlibCompressor
 		return returnValues;
 	}
 
-	public byte[] compress(final String stringToCompress) {
+	public static byte[] compress(final String stringToCompress) {
 		byte[] returnValues = null;
 		try {
-			returnValues = this.compress(stringToCompress.getBytes("UTF-8"));
+			returnValues = compress(stringToCompress.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
 		}
@@ -44,7 +51,7 @@ public class ZlibCompressor
 		return returnValues;
 	}
 
-	public byte[] decompress(final byte[] bytesToDecompress, final int maxLength) {
+	public static byte[] decompress(final byte[] bytesToDecompress, final int maxLength) {
 		byte[] returnValues = null;
 		Inflater inflater = new Inflater();
 
@@ -78,7 +85,7 @@ public class ZlibCompressor
 		return returnValues;
 	}
 
-	public byte[] decompress(final byte[] bytesToDecompress) {
+	public static byte[] decompress(final byte[] bytesToDecompress) {
 		byte[] returnValues = null;
 		Inflater inflater = new Inflater();
 
@@ -109,7 +116,7 @@ public class ZlibCompressor
 		return returnValues;
 	}
 
-	public String decompressToString(final byte[] bytesToDecompress) {
+	public static String decompressToString(final byte[] bytesToDecompress) {
 		byte[] bytesDecompressed = decompress(bytesToDecompress);
 		String returnValue = null;
 		try {
