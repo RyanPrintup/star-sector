@@ -18,7 +18,7 @@ public class CmdPrivateMessage extends Command
 	{
 		Player who = server.findPlayer(args.split(" ")[0]);
 		if (who == null) {
-			player.sendMessage("Could not find specifeed player.");
+			player.sendMessage("Could not find specified player.");
 			return;
 		}
 		

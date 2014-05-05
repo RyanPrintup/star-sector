@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.ryanprintup.starsector.Player;
+
 public class Connection implements Runnable
 {
 	private PacketProcessor packetProcessor;
@@ -17,7 +19,7 @@ public class Connection implements Runnable
 	public Connection(InputStream inputStream, OutputStream outputStream)
 	{
 		packetProcessor = new PacketProcessor();
-		
+
 		this.inputStream = inputStream;
 		this.outputStream = outputStream;
 		

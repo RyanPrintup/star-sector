@@ -1,12 +1,11 @@
 package com.ryanprintup.starsector.net;
 
 import com.ryanprintup.starsector.net.packets.Packets;
+import com.ryanprintup.starsector.util.ZlibCompressor;
 
 
 public class PacketProcessor
-{
-	private PacketReader packetReader = new PacketReader();
-	
+{	
 	public void process(final byte[] packet)
 	{
 		switch (packet[0]) {
@@ -20,11 +19,12 @@ public class PacketProcessor
 				System.out.println("Chat message");
 				break;
 			case Packets.clientConnect:
-				System.out.println("Client join");
+				System.out.println("Client connect");
 				break;
 			case Packets.clientDisconnect:
 				System.out.println("Client disconnect");
 				break;
 		}
 	}
+	
 }

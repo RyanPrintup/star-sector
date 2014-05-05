@@ -2,6 +2,10 @@ package com.ryanprintup.starsector.net.packets;
 
 public class Packets
 {	
+	/**
+	 * Packet information from http://starbound-dev.org/ 
+	 */
+	
 	public static final byte
 		protocolVersion 		     = 0x00,
 		connectionResponse 		     = 0x01,
