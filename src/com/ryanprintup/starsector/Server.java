@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ryanprintup.starsector.command.CommandList;
+import com.ryanprintup.starsector.configuration.Config;
 import com.ryanprintup.starsector.starbound.StarboundServer;
-import com.ryanprintup.starsector.util.Config;
 import com.ryanprintup.starsector.util.Console;
 
 public class Server implements Runnable
 {	
-	private static final String STAR_SECTOR_VERSION = "1.0.0";
 	
-	private Console console = Console.getInstance();
+	private Console console = new Console();
 	private Config config = new Config();
 	
 	private StarboundServer starboundServer;
@@ -28,17 +27,15 @@ public class Server implements Runnable
 	
 	public Server()
 	{
-		config.setServerInstance(this);
 		CommandList.initDefaults();
 		
-		// Initiated here because the server instance needs to be set first
 		starboundServer = new StarboundServer();
 	}
 	
 	public synchronized void start()
 	{
 		console.info("Starting server....");
-		console.info("You are running Star Sector " + STAR_SECTOR_VERSION);
+		console.info("You are running Star Sector " + StarSector.getVersion());
 
 		checkForFiles();
 		
@@ -55,10 +52,10 @@ public class Server implements Runnable
 		starboundServer.setPort(21020);
 		console.info("Starbound bounded to port " + config.getStarboundPort());
 		
-		if (!starboundServer.start()) {
-			console.error("Error starting Starbound server");
-			return;
-		}
+		//if (!starboundServer.start()) {
+			//console.error("Error starting Starbound server");
+			//return;
+		//}
 		console.info("Waiting for starbound server to startup...");
 		waitForServerStartup();
 		console.info("Starbound server started");
@@ -87,7 +84,7 @@ public class Server implements Runnable
 			try {
 				client = serverSocket.accept();
 				
-				if (!emptySlot()) {
+				if (!hasEmptySlot()) {
 					console.info(client.getInetAddress().getHostAddress() + " attempted to join but the server is full");
 					client.close();
 				} else {
@@ -152,11 +149,11 @@ public class Server implements Runnable
 	 */
 	private void waitForServerStartup()
 	{
-		Socket s;
+		Socket test;
 		
-		while (true) {
+		while (true) {		
 			try {
-				s = new Socket("127.0.0.1", config.getStarboundPort());
+				test = new Socket("127.0.0.1", config.getStarboundPort());
 				
 				break;
 			} catch (IOException e) {
@@ -168,7 +165,7 @@ public class Server implements Runnable
 		}
 		
 		try {
-			s.close();
+			test.close();
 		} catch (IOException e) {
 		}
 	}
@@ -184,7 +181,7 @@ public class Server implements Runnable
 	
 	public void addPlayer(Player p)
 	{
-		if (emptySlot() /*&& findPlayer(p) == null*/) {
+		if (hasEmptySlot() /*&& findPlayer(p) == null*/) {
 			players.add(p);
 		}
 	}
@@ -228,9 +225,14 @@ public class Server implements Runnable
 		return players.size();
 	}
 	
-	public boolean emptySlot()
+	public boolean hasEmptySlot()
 	{
 		return players.size() < config.getMaxClients();
+	}
+	
+	public Console getConsole()
+	{
+		return console;
 	}
 	
 	public Config getConfig()

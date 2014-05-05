@@ -3,8 +3,8 @@ package com.ryanprintup.starsector;
 import java.io.IOException;
 import java.net.Socket;
 
+import com.ryanprintup.starsector.configuration.Config;
 import com.ryanprintup.starsector.net.Connection;
-import com.ryanprintup.starsector.util.Config;
 
 public class Player
 {
@@ -22,7 +22,7 @@ public class Player
 		
 		try {
 			socket.setKeepAlive(true);
-			Socket serverSocket = new Socket("127.0.0.1", Config.getServerInstance().getConfig().getStarboundPort());
+			Socket serverSocket = new Socket("127.0.0.1", StarSector.getServer().getConfig().getStarboundPort());
 			
 			client = new Connection(socket.getInputStream(), serverSocket.getOutputStream());
 			server = new Connection(serverSocket.getInputStream(), socket.getOutputStream());
