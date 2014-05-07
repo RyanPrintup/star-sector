@@ -101,6 +101,9 @@ public final class Starlog {
 	}
 	
 	private String getTime() {
+		/* To make sure you log into the
+		 * right file even if you only
+		 * try to get the time */
 		checkIfNextDate();
 		
 		time = new LocalTime();
