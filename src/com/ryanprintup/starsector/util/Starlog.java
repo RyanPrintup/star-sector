@@ -12,41 +12,61 @@ public final class Starlog {
 	private final DateTimeFormatter dateFormat;
 	private final DateTimeFormatter timeFormat;
 	private LocalDate date;
+	private LocalDate nextDateLog;
 	private LocalTime time;
 	
 	private final File logDir;
-	private final File log;
+	private File log;
 	private BufferedWriter out;
 	
 	public Starlog() {
 		this.dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 		this.timeFormat = DateTimeFormat.forPattern("HH:mm:ss");
-		this.out = null;
+		this.nextDateLog = new LocalDate().plusDays(1);
 		
-		String fileDate = getDate();
+		this.out = null;
 		this.logDir = new File("logs");
-		this.log = new File("logs/" + "log(" + fileDate + ").txt");
-		this.logDir.mkdir(); // to create dir in case of absence
+		this.log = new File("logs/" + "log(" + getDate() + ").txt");
+		this.logDir.mkdir(); // Create directory in case of absence
 		
 		try {
+			// Create a log if we don't have one
 			checkForLog(log);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	 
+	 /* If the date changes while Starlog is logging, 
+	  * we do not want it to log into the wrong date */
+	public void checkIfNextDate() {
+		LocalDate currentDateLog = new LocalDate();
+		
+		if (currentDateLog.isEqual(nextDateLog)) {
+			log = new File("logs/" + "log(" + dateFormat.print(nextDateLog) + ").txt");
+			
+			try {
+				checkForLog(log);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				nextDateLog = new LocalDate().plusDays(1);
+			}
+		}
+	}
 	
 	public void info(String msg) {
-		String to_log = getDate() + " " + getTime() + " INFO: " + msg;
+		String to_log = getTime() + " INFO: " + msg;
 		writeToLog(to_log);
 	} 
 	
 	public void warn(String msg) {
-		String to_log = getDate() + " " + getTime() + " WARN: " + msg;
+		String to_log = getTime() + " WARN: " + msg;
 		writeToLog(to_log);
 	}
 	
 	public void error(String msg) {
-		String to_log = getDate() + " " + getTime() + " ERROR: " + msg;
+		String to_log = getTime() + " ERROR: " + msg;
 		writeToLog(to_log);
 	}
 	
@@ -68,17 +88,21 @@ public final class Starlog {
 	}
 	
 	private void checkForLog(File log) throws IOException {
-		if (!this.log.exists()) {
-			this.log.createNewFile();
+		if (!log.exists()) {
+			log.createNewFile();
 		}
 	}
 	
 	private String getDate() {
+		checkIfNextDate();
+		
 		date = new LocalDate();
 		return dateFormat.print(date);
 	}
 	
 	private String getTime() {
+		checkIfNextDate();
+		
 		time = new LocalTime();
 		return timeFormat.print(time);
 	}
