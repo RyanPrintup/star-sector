@@ -18,4 +18,15 @@ public final class Validate
 		
 		return false;
 	}
+	
+	public static <T> boolean isEmpty(T field)
+	{
+		if (!isNull(field)) {
+			if (field instanceof String && field.equals("") || field == "") {
+				return true;
+			}
+		}
+		
+		return true;
+	}
 }
