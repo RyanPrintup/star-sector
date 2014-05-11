@@ -3,23 +3,18 @@ package com.ryanprintup.starsector.configuration;
 import java.io.File;
 
 public class ServerConfig extends Config
-{
-	public ServerConfig(String file)
-	{
-		super(file);
-	}
-	
-	public ServerConfig(File file)
-	{
-		super(file);
-	}
-
+{	
 	public static final String SERVER_NAME = "serverName";
 	public static final String CONSOLE_NAME = "consoleName";
 	public static final String MOTD = "motd";
 	public static final String SERVER_PORT = "serverPort";
 	public static final String STARBOUND_PORT = "starboundPort";
 	public static final String MAX_PLAYERS = "maxPlayers";
+	
+	public ServerConfig(File file)
+	{
+		super(file);
+	}
 
 	@Override
 	protected void setDefaults()
