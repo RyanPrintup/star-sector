@@ -1,129 +1,97 @@
 package com.ryanprintup.starsector.configuration;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.ryanprintup.starsector.util.StringUtils;
-import com.ryanprintup.starsector.util.Validate;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
-public class Config {
+import com.ryanprintup.starsector.StarSector;
+
+public abstract class Config
+{
+	private File configFile;
+	protected Map<String, Object> config = new HashMap<String, Object>();
 	
-	private static final File configFile = new File("star_sector.config");
-	private final Properties config = new Properties();
+	private DumperOptions yamlOptions = new DumperOptions();
+	private Yaml yaml;
 	
-	private String serverName;
-	private String consoleName;
-	private String motd;
-	private int serverPort;
-	private int starboundPort;
-	private int maxClients;
+	public Config(File configFile)
+	{
+		this.configFile = configFile;
+		
+		yamlOptions.setIndent(2);
+		yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		
+		yaml = new Yaml(yamlOptions);
+	}
+	
+	protected abstract void setDefaults();
+	
+	private void generate()
+	{
+		config.clear();
+		setDefaults();
+		save();
+	}
+	
+	public void load()
+	{
+		config.clear();
+		
+		if (!configFile.exists()) {
+			StarSector.getServer().getConsole().info("Could not find configuration file. Generating file.");
+			
+			generate();
+		} else {
+			Map data = (Map) yaml.load(configFile.getAbsolutePath());
+			System.out.println(data);
+		}
+	}
+	
+	public void save()
+	{
+		String data = yaml.dump(config);
+		
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(configFile, "UTF-8");
+			writer.println(data);
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public boolean exists()
 	{
 		return configFile.exists();
 	}
 	
-	private void check() throws IOException
+	public Object getObject(String key)
 	{
-		boolean rewrite = false;
-		
-		if (Validate.isNull(config.getProperty("server-name"))) {
-			config.setProperty("server-name", ConfigDefaults.SERVER_NAME.getValue());
-			rewrite = true;
-		} else {
-			config.setProperty("server-name", config.getProperty("server-name"));
-		}
-		
-		if (Validate.isNull(config.getProperty("console-name"))) {
-			config.setProperty("console-name", ConfigDefaults.CONSOLE_NAME.getValue());
-			rewrite = true;
-		} else {
-			config.setProperty("console-name", config.getProperty("console-name"));
-		}
-		
-		if (Validate.isNull(config.getProperty("star-sector-port"))) {
-			config.setProperty("star-sector-port", ConfigDefaults.SERVER_PORT.getValue());
-			rewrite = true;
-		} else {
-			config.setProperty("star-sector-port", config.getProperty("star-sector-port"));
-		}
-		
-		if (Validate.isNull(config.getProperty("starbound-port"))) {
-			config.setProperty("starbound-port", ConfigDefaults.STARBOUND_PORT.getValue());
-			rewrite = true;
-		} else {
-			config.setProperty("starbound-port", config.getProperty("starbound-port"));
-		}
-		
-		if (Validate.isNull(config.getProperty("max-clients"))) {
-			config.setProperty("max-clients", ConfigDefaults.MAX_CLIENTS.getValue());
-			rewrite = true;
-		} else {
-			config.setProperty("max-clients", config.getProperty("max-clients"));
-		}
-		
-		if (rewrite) {
-			config.store(new FileOutputStream(configFile), null);
-		}
+		return config.get(key);
 	}
 	
-	public void load() throws IOException, NumberFormatException
+	public String getString(String key)
 	{
-		if (!exists()) {
-			generate();
-		} else {
-			check();
-		}
-		
-		config.load(new FileInputStream(configFile));
-		
-		serverName = config.getProperty("server-name");
-		consoleName = config.getProperty("console-name");
-		motd = config.getProperty("motd");
-		
-		serverPort = StringUtils.parseInt(config.getProperty("star-sector-port"));
-		starboundPort = StringUtils.parseInt(config.getProperty("starbound-port"));
-		maxClients = StringUtils.parseInt(config.getProperty("max-clients"));
+		return (String) getObject(key);
 	}
 	
-	public void generate() throws IOException
+	public int getInt(String key)
 	{
-		config.setProperty("server-name", ConfigDefaults.SERVER_NAME.getValue());
-		config.setProperty("console-name", ConfigDefaults.CONSOLE_NAME.getValue());
-		config.setProperty("motd", ConfigDefaults.MOTD.getValue());
-		config.setProperty("star-sector-port", ConfigDefaults.SERVER_PORT.getValue());
-		config.setProperty("starbound-port", ConfigDefaults.STARBOUND_PORT.getValue());
-		config.setProperty("max-clients", ConfigDefaults.MAX_CLIENTS.getValue());
-		
-		config.store(new FileOutputStream(configFile), null);
+		return (int) getObject(key);
 	}
 	
-	public String getServerName()
+	public double getDouble(String key)
 	{
-		return serverName;
-	}
-	
-	public String getConsoleName()
-	{
-		return consoleName;
-	}
-	
-	public String getMotd() {
-		return motd;
-	}
-	
-	public int getServerPort() {
-		return serverPort;
-	}
-	
-	public int getStarboundPort() {
-		return starboundPort;
-	}
-	
-	public int getMaxClients() {
-		return maxClients;
+		return (double) getObject(key);
 	}
 }
