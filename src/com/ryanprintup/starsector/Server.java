@@ -1,5 +1,6 @@
 package com.ryanprintup.starsector;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,19 +8,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ryanprintup.starsector.command.CommandList;
+import com.ryanprintup.starsector.command.defaults.CmdHelp;
+import com.ryanprintup.starsector.command.defaults.CmdIp;
+import com.ryanprintup.starsector.command.defaults.CmdKick;
+import com.ryanprintup.starsector.command.defaults.CmdPlayers;
+import com.ryanprintup.starsector.command.defaults.CmdPrivateMessage;
+import com.ryanprintup.starsector.command.defaults.CmdRestart;
+import com.ryanprintup.starsector.command.defaults.CmdSay;
+import com.ryanprintup.starsector.command.defaults.CmdStart;
+import com.ryanprintup.starsector.command.defaults.CmdStop;
 import com.ryanprintup.starsector.configuration.Config;
+import com.ryanprintup.starsector.configuration.ServerConfig;
 import com.ryanprintup.starsector.starbound.StarboundServer;
-import com.ryanprintup.starsector.util.Console;
 
 public class Server implements Runnable
-{	
+{
+	private Console console;
+	private Config serverConfig;
+	private Logger logger;
 	
-	private Console console = new Console();
-	private Config config = new Config();
-	
+	private CommandList commandList = new CommandList();
 	private StarboundServer starboundServer;
 	
 	private List<Player> players = new ArrayList<Player>();
+	
+	private static final File logDirectory = new File("logs");
+	
+	private static final File serverLogFile = new File(logDirectory + "server.log");
+	private static final File serverConfigFile = new File("config.yaml");
 	
 	private ServerSocket serverSocket;
 	private Thread server = new Thread(this);
@@ -27,47 +43,44 @@ public class Server implements Runnable
 	
 	public Server()
 	{
-		CommandList.initDefaults();
+		StarSector.setServer(this);
+		
+		console = new Console();
+		serverConfig = new ServerConfig(serverConfigFile);
+		logger = new Logger(serverLogFile);
 		
 		starboundServer = new StarboundServer();
+		
+		setCommandDefaults();
 	}
 	
 	public synchronized void start()
 	{
 		console.info("Starting server....");
 		console.info("You are running Star Sector " + StarSector.getVersion());
-
-		checkForFiles();
 		
-		try {
-			config.load();
-		} catch (NumberFormatException | IOException e) {
-			console.error("Error loading config file");
-			e.printStackTrace();
-			return;
-		}
-		
+		serverConfig.load();
 		console.info("Config file loaded");
 		
-		starboundServer.setPort(21020);
-		console.info("Starbound bounded to port " + config.getStarboundPort());
+		starboundServer.setPort(serverConfig.getInt(ServerConfig.STARBOUND_PORT));
+		console.info("Starbound bounded to port " + serverConfig.getInt(ServerConfig.STARBOUND_PORT));
 		
-		//if (!starboundServer.start()) {
-			//console.error("Error starting Starbound server");
-			//return;
-		//}
+		if (!starboundServer.start()) {
+			console.error("Error starting Starbound server");
+			return;
+		}
 		console.info("Waiting for starbound server to startup...");
 		waitForServerStartup();
 		console.info("Starbound server started");
 		
 		try {
-			serverSocket = new ServerSocket(config.getServerPort(), config.getMaxClients());
+			serverSocket = new ServerSocket(serverConfig.getInt(ServerConfig.SERVER_PORT), serverConfig.getInt(ServerConfig.MAX_PLAYERS));
 		} catch (IOException e) {
-			console.error("Error binding Star Sector to port " + config.getServerPort());
+			console.error("Error binding Star Sector to port " + serverConfig.getInt(ServerConfig.SERVER_PORT));
 			e.printStackTrace();
 			return;
 		}
-		console.info("Star Sector bounded to port " + config.getServerPort());
+		console.info("Star Sector bounded to port " + serverConfig.getInt(ServerConfig.SERVER_PORT));
 		
 		running = true;
 		server.start();
@@ -125,27 +138,11 @@ public class Server implements Runnable
 		console.info("Server stopped");
 	}
 	
-	private void checkForFiles()
-	{
-		if (!config.exists()) {
-			console.info("Config file not found.");
-			console.info("Generating config file");
-			
-			try {
-				config.generate();
-				
-				console.info("Config file generated.");
-			} catch (IOException e) {
-				console.error("Error generating config file");
-			}
-		}
-	}
-	
 	/**
 	 * The starbound server takes time to load the world
 	 * and other important files. In order to see when it is
 	 * ready we keep trying to connect to the server until a
-	 * connection succeeds.
+	 * connection succeeds. That connection is then closed.
 	 */
 	private void waitForServerStartup()
 	{
@@ -153,7 +150,7 @@ public class Server implements Runnable
 		
 		while (true) {		
 			try {
-				test = new Socket("127.0.0.1", config.getStarboundPort());
+				test = new Socket("127.0.0.1", serverConfig.getInt(ServerConfig.STARBOUND_PORT));
 				
 				break;
 			} catch (IOException e) {
@@ -170,13 +167,26 @@ public class Server implements Runnable
 		}
 	}
 	
+	private void setCommandDefaults()
+	{
+		commandList.register(new CmdHelp());
+		commandList.register(new CmdIp());
+		commandList.register(new CmdKick());
+		commandList.register(new CmdPlayers());
+		commandList.register(new CmdPrivateMessage());
+		commandList.register(new CmdRestart());
+		commandList.register(new CmdSay());
+		commandList.register(new CmdStart());
+		commandList.register(new CmdStop());
+	}
+	
 	public void sendMessage(String message)
 	{
 		for (Player p : players) {
 			p.sendMessage(message);
 		}
 		
-		console.write(message);
+		console.sendMessage(message);
 	}
 	
 	public void addPlayer(Player p)
@@ -227,7 +237,12 @@ public class Server implements Runnable
 	
 	public boolean hasEmptySlot()
 	{
-		return players.size() < config.getMaxClients();
+		return players.size() < serverConfig.getInt(ServerConfig.MAX_PLAYERS);
+	}
+	
+	public boolean isRunning()
+	{
+		return running;
 	}
 	
 	public Console getConsole()
@@ -237,11 +252,16 @@ public class Server implements Runnable
 	
 	public Config getConfig()
 	{
-		return config;
+		return serverConfig;
 	}
 	
-	public boolean isRunning()
+	public Logger getLogger()
 	{
-		return running;
+		return logger;
+	}
+	
+	public CommandList getCommandList()
+	{
+		return commandList;
 	}
 }
