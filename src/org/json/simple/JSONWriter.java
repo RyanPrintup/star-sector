@@ -4,16 +4,26 @@ import java.io.StringWriter;
 
 /**
  * Used to write pretty-print JSON
+ * 
+ * Example of output:
+ * 
+ * {
+ *    "Key": "value",
+ *    "Array": [ "One", "Two", "Three" ],
+ *    "Object": {
+ *       "Key": 1
+ *    }
+ * }
  */
 public class JSONWriter extends StringWriter
 {
     private int indent = 0;
-
+    private boolean inArray = false;
+    
     @Override
     public void write(int c)
     {
     	switch ((char) c) {
-    		case '[':
     		case '{':
     			super.write(c);
     			super.write('\n');
@@ -21,11 +31,23 @@ public class JSONWriter extends StringWriter
     			indent++;
     			writeIndentation();
     			break;
+    		case '[':
+    			inArray = true;
+    			
+    			super.write(c);
+    			super.write(' ');
+    			
+    			break;
     		case ',':
     			super.write(c);
-    			super.write('\n');
     			
-    			writeIndentation();
+    			if (!inArray) {
+    				super.write('\n');
+    				writeIndentation();
+    			} else {
+    				super.write(' ');
+    			}
+    			
     			break;
     		case ':':
     			super.write(c);
@@ -33,6 +55,12 @@ public class JSONWriter extends StringWriter
     			
     			break;
     		case ']':
+    			inArray = false;
+    			
+    			super.write(' ');
+    			super.write(c);
+    			
+    			break;
     		case '}':
     			super.write('\n');
     			
