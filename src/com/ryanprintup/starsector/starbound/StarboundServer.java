@@ -1,20 +1,30 @@
 package com.ryanprintup.starsector.starbound;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Random;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONWriter;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.ryanprintup.starsector.Console;
 import com.ryanprintup.starsector.Server;
 import com.ryanprintup.starsector.StarSector;
-import com.ryanprintup.starsector.util.Console;
+import com.ryanprintup.starsector.configuration.Config;
+import com.ryanprintup.starsector.configuration.StarSectorConfig;
+import com.ryanprintup.starsector.configuration.StarboundConfig;
+import com.ryanprintup.starsector.exceptions.StarSectorException;
 
 public class StarboundServer
 {
 	private final String os = System.getProperty("os.name").toLowerCase();
 	private static final File config = new File("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Starbound\\starbound.config");
+	private Config starboundConfig = new StarboundConfig(config);
 	
 	private Server server = StarSector.getServer();
 	private Console console = server.getConsole();
@@ -27,13 +37,19 @@ public class StarboundServer
 	
 	private Process serverProcess;
 	
-	public boolean start()
+	public void start() throws StarSectorException
 	{
-		port = server.getConfig().getStarboundPort();
-		serverName = server.getConfig().getServerName();
+		/**
+		 * Set values here so every time the server is restarted
+		 * the most recent values are used.
+		 */
+		port = server.getConfig().getInt(StarSectorConfig.STARBOUND_PORT);
+		serverName = server.getConfig().getString(StarSectorConfig.SERVER_NAME);
 		serverPassword = generatePassword();
 		
-		editStarboundSettings();
+		editStarboundConfiguration();
+		
+		console.info("Starbound configuration successfully modified.");
 		
 		/*ProcessBuilder pb;
 		File starboundServerPath;
@@ -61,15 +77,13 @@ public class StarboundServer
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-		}*/
+		}
 		
 		try {
 			serverProcess = new ProcessBuilder("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Starbound\\win32\\starbound_server.exe").start();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		return true;
+		}*/
 	}
 	
 	public void stop()
@@ -82,35 +96,22 @@ public class StarboundServer
 		
 	}
 	
-	private void editStarboundSettings()
+	private void editStarboundConfiguration()
 	{
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(config));
-			StringBuilder sb = new StringBuilder();
-			
-			String line = br.readLine();
-			while (line != null) {
-				if (line.contains("gamePort")) {
-					sb.append("  \"gamePort\" : " + port + ",");
-				} else if (line.contains("serverName")) {
-					sb.append("  \"serverName\" : \"" + serverName + "\",");
-				} else if (line.contains("serverPasswords")) {
-					//sb.append("  \"serverPasswords\" : [ \"" + serverPassword + "\" ],");
-				} else {
-					sb.append(line);
-				}
-				
-				sb.append("\r\n");
-				line = br.readLine();
-			}
-			
-			br.close();
-			PrintWriter pw = new PrintWriter(config);
-			pw.write(sb.toString());
-			pw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		console.info("Modifying Starbound configratuion.");
+		
+		starboundConfig.load();
+		
+		starboundConfig.set(StarboundConfig.GAME_PORT, port);
+		starboundConfig.set(StarboundConfig.SERVER_NAME, serverName);
+		
+		JSONArray serverPasswords = new JSONArray();
+		//serverPasswords.add(serverPassword);
+		serverPasswords.add("");
+		
+		starboundConfig.set(StarboundConfig.SERVER_PASSWORDS, serverPasswords);
+		
+		starboundConfig.save();
 	}
 	
 	public String generatePassword()
@@ -125,11 +126,6 @@ public class StarboundServer
 		}
 		
 		return password.toString();
-	}
-	
-	public void setPort(int port)
-	{
-		this.port = port;
 	}
 	
 	private boolean isWindows()
