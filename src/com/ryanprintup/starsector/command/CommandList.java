@@ -22,12 +22,17 @@ public class CommandList
 		commands.add(command);
 	}
 	
+	public void unregister(Command command)
+	{
+		if (contains(command.getName())) {
+			commands.remove(command);
+		}
+	}
+	
 	public Command getCommand(String command)
 	{
-		command = command.toLowerCase();
-		
 		for (Command cmd : commands) {
-			if (cmd.getName().equals(command) || cmd.getShortcut().equals(command)) {
+			if (cmd.getName().equalsIgnoreCase(command)) {
 				return cmd;
 			}
 		}
@@ -35,23 +40,9 @@ public class CommandList
 		return null;
 	}
 	
-	public Command getCommand(Command command)
+	public boolean contains(String command)
 	{
-		return getCommand(command.getName());
-	}
-	
-	public Command getCommand(int index)
-	{
-		if (index > commands.size()) {
-			return null;
-		}
-		
-		return commands.get(index);
-	}
-	
-	public boolean isCommand(String command)
-	{
-		return getCommand(command) == null ? false : true;
+		return commands.contains(command);
 	}
 	
 	public int getSize()
