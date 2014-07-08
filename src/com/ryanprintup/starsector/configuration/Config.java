@@ -1,34 +1,27 @@
 package com.ryanprintup.starsector.configuration;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONWriter;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.ryanprintup.starsector.StarSector;
 
 public abstract class Config
 {
 	private File configFile;
-	protected Map<String, Object> config = new HashMap<String, Object>();
+	private JSONObject config = new JSONObject();
 	
-	private DumperOptions yamlOptions = new DumperOptions();
-	private Yaml yaml;
+	private JSONParser parser = new JSONParser();
 	
 	public Config(File configFile)
 	{
 		this.configFile = configFile;
-		
-		yamlOptions.setIndent(2);
-		yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-		
-		yaml = new Yaml(yamlOptions);
 	}
 	
 	protected abstract void setDefaults();
@@ -45,27 +38,30 @@ public abstract class Config
 		config.clear();
 		
 		if (!configFile.exists()) {
-			StarSector.getServer().getConsole().info("Could not find configuration file. Generating file.");
+			StarSector.getServer().getConsole().info("Could not find configuration file " + configFile.getAbsolutePath() + ". Generating file.");
 			
 			generate();
 		} else {
-			Map data = (Map) yaml.load(configFile.getAbsolutePath());
-			System.out.println(data);
+			try {
+				config = (JSONObject) parser.parse(new FileReader(configFile));
+			} catch (IOException | ParseException e) {
+				StarSector.getServer().getConsole().error("Could not load config file " + configFile.getAbsolutePath() + " : " + e.getMessage());
+			}
 		}
 	}
-	
+
 	public void save()
 	{
-		String data = yaml.dump(config);
-		
-		PrintWriter writer;
 		try {
-			writer = new PrintWriter(configFile, "UTF-8");
-			writer.println(data);
+			FileWriter writer = new FileWriter(configFile);
+			
+			JSONWriter out = new JSONWriter();
+			config.writeJSONString(out);
+			
+			writer.write(out.toString());
+			writer.flush();
 			writer.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -75,9 +71,14 @@ public abstract class Config
 		return configFile.exists();
 	}
 	
+	public void set(String key, Object value)
+	{
+		config.put(key, value);
+	}
+	
 	public Object getObject(String key)
 	{
-		return config.get(key);
+		return (Object) config.get(key);
 	}
 	
 	public String getString(String key)
@@ -90,8 +91,18 @@ public abstract class Config
 		return (int) getObject(key);
 	}
 	
+	public boolean getBoolean(String key)
+	{
+		return (boolean) getObject(key);
+	}
+	
 	public double getDouble(String key)
 	{
 		return (double) getObject(key);
+	}
+	
+	public float getFloat(String key)
+	{
+		return (float) getObject(key);
 	}
 }
