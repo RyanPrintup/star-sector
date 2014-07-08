@@ -8,11 +8,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.ryanprintup.starsector.configuration.StarSectorConfig;
 import com.ryanprintup.starsector.util.Validate;
 
 public class Logger
 {
-	private static final DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
+	private static final DateFormat dateFormat = new SimpleDateFormat(StarSector.getServer().getConfig().getString(StarSectorConfig.DATE_FORMAT));
 	
 	private boolean directory = false;
 	
