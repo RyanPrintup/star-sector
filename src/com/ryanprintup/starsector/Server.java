@@ -18,14 +18,16 @@ import com.ryanprintup.starsector.command.defaults.CmdSay;
 import com.ryanprintup.starsector.command.defaults.CmdStart;
 import com.ryanprintup.starsector.command.defaults.CmdStop;
 import com.ryanprintup.starsector.configuration.Config;
-import com.ryanprintup.starsector.configuration.ServerConfig;
+import com.ryanprintup.starsector.configuration.StarSectorConfig;
+import com.ryanprintup.starsector.exceptions.StarSectorException;
 import com.ryanprintup.starsector.starbound.StarboundServer;
 
 public class Server implements Runnable
 {
 	private Console console;
-	private Config serverConfig;
+	private Config config;
 	private Logger logger;
+	private Updater updater = new Updater();
 	
 	private CommandList commandList = new CommandList();
 	private StarboundServer starboundServer;
@@ -33,9 +35,8 @@ public class Server implements Runnable
 	private List<Player> players = new ArrayList<Player>();
 	
 	private static final File logDirectory = new File("logs");
-	
 	private static final File serverLogFile = new File(logDirectory + "server.log");
-	private static final File serverConfigFile = new File("config.yaml");
+	private static final File configFile = new File("config.json");
 	
 	private ServerSocket serverSocket;
 	private Thread server = new Thread(this);
@@ -44,11 +45,8 @@ public class Server implements Runnable
 	public Server()
 	{
 		StarSector.setServer(this);
-		
+
 		console = new Console();
-		serverConfig = new ServerConfig(serverConfigFile);
-		logger = new Logger(serverLogFile);
-		
 		starboundServer = new StarboundServer();
 		
 		setCommandDefaults();
@@ -56,36 +54,43 @@ public class Server implements Runnable
 	
 	public synchronized void start()
 	{
+		config = new StarSectorConfig(configFile);
+		
 		console.info("Starting server....");
 		console.info("You are running Star Sector " + StarSector.getVersion());
-		
-		serverConfig.load();
+		console.info("Checking for Star Sector update...");
+		updater.check();
+
+		config.load();
 		console.info("Config file loaded");
 		
-		starboundServer.setPort(serverConfig.getInt(ServerConfig.STARBOUND_PORT));
-		console.info("Starbound bounded to port " + serverConfig.getInt(ServerConfig.STARBOUND_PORT));
+		logger = new Logger(serverLogFile);
 		
-		if (!starboundServer.start()) {
-			console.error("Error starting Starbound server");
-			return;
+		try {
+			starboundServer.start();
+		} catch (StarSectorException e) {
+			e.printStackTrace();
 		}
+		
+		console.info("Starbound bounded to port " + config.getInt(StarSectorConfig.STARBOUND_PORT));
+		
 		console.info("Waiting for starbound server to startup...");
 		waitForServerStartup();
 		console.info("Starbound server started");
 		
 		try {
-			serverSocket = new ServerSocket(serverConfig.getInt(ServerConfig.SERVER_PORT), serverConfig.getInt(ServerConfig.MAX_PLAYERS));
+			serverSocket = new ServerSocket(config.getInt(StarSectorConfig.SERVER_PORT), config.getInt(StarSectorConfig.MAX_PLAYERS));
 		} catch (IOException e) {
-			console.error("Error binding Star Sector to port " + serverConfig.getInt(ServerConfig.SERVER_PORT));
+			console.error("Error binding Star Sector to port " + config.getInt(StarSectorConfig.SERVER_PORT));
 			e.printStackTrace();
 			return;
 		}
-		console.info("Star Sector bounded to port " + serverConfig.getInt(ServerConfig.SERVER_PORT));
+		console.info("Star Sector bounded to port " + config.getInt(StarSectorConfig.SERVER_PORT));
 		
 		running = true;
 		server.start();
 		
-		console.info("Server started");	
+		console.info("Server started");
 	}
 	
 	@Override
@@ -150,7 +155,7 @@ public class Server implements Runnable
 		
 		while (true) {		
 			try {
-				test = new Socket("127.0.0.1", serverConfig.getInt(ServerConfig.STARBOUND_PORT));
+				test = new Socket("127.0.0.1", config.getInt(StarSectorConfig.STARBOUND_PORT));
 				
 				break;
 			} catch (IOException e) {
@@ -180,7 +185,7 @@ public class Server implements Runnable
 		commandList.register(new CmdStop());
 	}
 	
-	public void sendMessage(String message)
+	public void broadcastMessage(String message)
 	{
 		for (Player p : players) {
 			p.sendMessage(message);
@@ -189,45 +194,34 @@ public class Server implements Runnable
 		console.sendMessage(message);
 	}
 	
-	public void addPlayer(Player p)
+	public void addPlayer(Player player)
 	{
-		if (hasEmptySlot() /*&& findPlayer(p) == null*/) {
-			players.add(p);
+		if (hasEmptySlot() && findPlayer(player.getName()) == null) {
+			players.add(player);
 		}
 	}
 	
-	public void removePlayer(Player p)
+	public void removePlayer(Player player)
 	{
-		if (findPlayer(p) != null) {
-			players.remove(p);
+		if (findPlayer(player.getName()) != null) {
+			players.remove(player);
 		}
 	}
 	
 	public Player findPlayer(String name)
 	{
-		name = name.toLowerCase();
-		
-		for (Player p : players) {
-			if (p.getName().toLowerCase().equals(name)) {
-				return p;
+		for (Player player : players) {
+			if (player.getName().equalsIgnoreCase(name)) {
+				return player;
 			}
 		}
 		
 		return null;
 	}
 	
-	public Player findPlayer(Player p)
+	public Player[] getOnlinePlayers()
 	{
-		return findPlayer(p.getName());
-	}
-	
-	public Player getPlayer(int index)
-	{
-		if (index > players.size()) {
-			return null;
-		}
-		
-		return players.get(index);
+		return players.toArray(new Player[players.size()]);
 	}
 	
 	public int getPlayerCount()
@@ -237,7 +231,7 @@ public class Server implements Runnable
 	
 	public boolean hasEmptySlot()
 	{
-		return players.size() < serverConfig.getInt(ServerConfig.MAX_PLAYERS);
+		return players.size() < config.getInt(StarSectorConfig.MAX_PLAYERS);
 	}
 	
 	public boolean isRunning()
@@ -252,7 +246,7 @@ public class Server implements Runnable
 	
 	public Config getConfig()
 	{
-		return serverConfig;
+		return config;
 	}
 	
 	public Logger getLogger()
