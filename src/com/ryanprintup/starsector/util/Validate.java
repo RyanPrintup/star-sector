@@ -12,19 +12,13 @@ public final class Validate
 	
 	public static <T> boolean isNull(T field)
 	{
-		if (field == null) {
-			return true;
-		}
-		
-		return false;
+		return field == null;
 	}
 	
 	public static <T> boolean isEmpty(T field)
 	{
 		if (!isNull(field)) {
-			if (field instanceof String && field.equals("") || field == "") {
-				return true;
-			}
+			return (field instanceof String && field.equals("")) || field == "";
 		}
 		
 		return true;
