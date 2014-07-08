@@ -2,10 +2,13 @@ package com.ryanprintup.starsector;
 
 import java.util.Scanner;
 
+import com.ryanprintup.starsector.command.CommandList;
 import com.ryanprintup.starsector.command.CommandSender;
 
 public class Console implements CommandSender
 {	
+	private Logger logger = StarSector.getServer().getLogger();
+	
 	private Thread input = new Thread(new ConsoleInput(this));
 	
 	public Console()
@@ -16,6 +19,7 @@ public class Console implements CommandSender
 	@Override
 	public void sendMessage(String message)
 	{
+		logger.log(message);
 		write(message);
 	}
 	
@@ -44,7 +48,7 @@ class ConsoleInput implements Runnable
 {
 	private Console console;
 	private Scanner scanner = new Scanner(System.in);
-	//private CommandList commandList = new CommandList();
+	private CommandList commandList = StarSector.getServer().getCommandList();
 	
 	public ConsoleInput(Console console)
 	{
@@ -64,10 +68,10 @@ class ConsoleInput implements Runnable
 	{
 		String command = input.split(" ")[0];
 		
-		/*if (commandList.isCommand(command)) {
-			commandList.getCommand(command).use(null, input);
+		if (commandList.isCommand(command)) {
+			commandList.getCommand(command).use(console, input);
 		} else {
-			//console.sendMessage("Invalid command: \"" + command + "\"");
-		}*/
+			console.sendMessage("Invalid command: \"" + command + "\"");
+		}
 	}
 }
