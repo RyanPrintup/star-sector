@@ -23,6 +23,13 @@ public class Console implements CommandSender
 		write(message);
 	}
 	
+	@Override
+	public void sendMessage(String[] messages) {
+		for (String message : messages) {
+			sendMessage(message);
+		}
+	}
+	
 	public void warn(String warning)
 	{
 		write("[WARNING] " + warning);
