@@ -16,7 +16,7 @@ public class NetTile
 	private byte unknown11;
 	private byte unknown12;
 	private byte unknown13;
-	private byte liqiuidLevel;
+	private byte liquidLevel;
 	private long gravity;
 	
 	public short getUnknown0()
@@ -89,9 +89,9 @@ public class NetTile
 		return unknown13;
 	}
 	
-	public byte getLiqiuidLevel()
+	public byte getLiquidLevel()
 	{
-		return liqiuidLevel;
+		return liquidLevel;
 	}
 	
 	public long getGravity()
