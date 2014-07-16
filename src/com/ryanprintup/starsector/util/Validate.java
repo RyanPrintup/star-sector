@@ -1,10 +1,9 @@
 package com.ryanprintup.starsector.util;
 
-
 public final class Validate
 {
 	/**
-	 * Avoid instantiation of static class
+	 * Avoid instantiation of a static class
 	 */
 	private Validate()
 	{
