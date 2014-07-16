@@ -25,21 +25,21 @@ public enum ChatColor
 	FUCHSIA("^#FF00FF;"),
 	PURPLE("^#800080;");
 	
-	private final String hexcode;
+	private final String hexCode;
 	
-	private ChatColor(String hexcode)
+	private ChatColor(String hexCode)
 	{
-		this.hexcode = hexcode;
+		this.hexCode = hexCode;
 	}
 	
-	public String getHexcode()
+	public String getHexCode()
 	{
-		return hexcode;
+		return hexCode;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return hexcode;
+		return hexCode;
 	}
 }
