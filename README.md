@@ -8,6 +8,9 @@ For help with the API, view the [wiki](#).
 # Requirements
 - Java
 
+# Installation
+The Installation guide is located on the [wiki](#w).
+
 # Features
 - Automates Starbound process
 	- Starts Starbound server
