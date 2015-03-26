@@ -1,5 +1,3 @@
-# Due to Starbound getting offical server software this project is abandoned.
-
 # Star Sector
 Star Sector aims to be an intuitive Starbound server wrapper. This wrapper comes bundled with adminstration and user commands. It is designed to run on Windows, Mac, and Linux operating systems. [Installation](#installation) takes a seconds with the only [dependancy](#requirements) being Java. If you wish a command or action was included in the wrapper, Star Sector comes with its own command and plugin API for you to utilize. View the extensive list of features [here](#features) and all the commands [here](#commands).
 

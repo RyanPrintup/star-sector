@@ -5,12 +5,7 @@ import java.util.Map;
 public class Variant
 {
 	private Object value;
-	
-	/**
-	 * Constructor with no parameters used
-	 * when an variant is created within
-	 * the variant class
-	 */
+
 	private Variant()
 	{
 	}

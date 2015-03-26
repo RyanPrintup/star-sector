@@ -8,7 +8,15 @@ package com.ryanprintup.starsector;
  */
 public final class StarSector
 {
-	private static final String STAR_SECTOR_VERSION = "0.1.0 A";
+    public static final String MAJOR_VERSION = "0";
+    public static final String MINOR_VERSION = "1";
+    public static final String PATCH_VERSION = "0";
+    public static final String DEV_VERSION   = "A";
+    public static final String VERSION       = MAJOR_VERSION + "." +
+                                               MINOR_VERSION + "." +
+                                               PATCH_VERSION +
+                                            ((!DEV_VERSION.isEmpty()) ? " " + DEV_VERSION : "");
+
 	private static Server server;
 	
 	/**
@@ -21,7 +29,7 @@ public final class StarSector
 	public static void setServer(Server server)
 	{
 		if (StarSector.server != null) {
-			throw new UnsupportedOperationException("Cannot redifine singleton server instance.");
+			throw new UnsupportedOperationException("Cannot redefine singleton server instance.");
 		}
 		
 		StarSector.server = server;
@@ -29,10 +37,5 @@ public final class StarSector
 	public static Server getServer()
 	{
 		return server;
-	}
-	
-	public static String getVersion()
-	{
-		return STAR_SECTOR_VERSION;
 	}
 }

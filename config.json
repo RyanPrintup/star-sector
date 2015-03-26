@@ -1,9 +1,0 @@
-{
-   "maxPlayers": 20,
-   "starboundPort": 21025,
-   "serverPort": 21020,
-   "consoleName": "Console",
-   "motd": "Welcome to a Star Sector server!",
-   "dateFormat": "MM.dd.yyyy HH:mm:ss",
-   "serverName": "Star Sector"
-}

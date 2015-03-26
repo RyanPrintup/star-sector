@@ -8,12 +8,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.ryanprintup.starsector.configuration.StarSectorConfig;
-import com.ryanprintup.starsector.util.Validate;
-
 public class Logger
 {
-	private static final DateFormat dateFormat = new SimpleDateFormat(StarSector.getServer().getConfig().getString(StarSectorConfig.DATE_FORMAT));
+	private static final DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");//new SimpleDateFormat(StarSector.getServer().getConfig().getString(StarSectorConfig.DATE_FORMAT));
 	
 	private boolean directory = false;
 	
@@ -30,12 +27,12 @@ public class Logger
 	{
 		this.logDirectory = logDirectory;
 		
-		if (!Validate.isNull(logDirectory) || !Validate.isEmpty(logDirectory)) {
+		/*if (!Validate.isNull(logDirectory) || !Validate.isEmpty(logDirectory)) {
 			directory = true;
 			this.logFile = new File(logDirectory.getPath() + "/" + logFile.getPath());
 		} else {
 			this.logFile = logFile;
-		}
+		}*/
 	}
 	
 	private void checkFile() throws IOException
