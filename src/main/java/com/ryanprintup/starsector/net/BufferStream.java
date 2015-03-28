@@ -1,9 +1,10 @@
 package com.ryanprintup.starsector.net;
 
+import com.ryanprintup.starsector.datatypes.NetTile;
+import com.ryanprintup.starsector.datatypes.Variant;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.ryanprintup.starsector.datatypes.Variant;
 
 
 public class BufferStream
@@ -121,6 +122,11 @@ public class BufferStream
 		
 		return variant;
 	}
+
+    public NetTile readNetTile()
+    {
+        return new NetTile();
+    }
 	
 	public byte[] readByteArray(int length)
 	{
