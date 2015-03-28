@@ -1,21 +1,18 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class TileDamageUpdatePacket extends BasePacket
+public class TileDamageUpdatePacket implements BasePacket
 {
 	private int tileX;
 	private int tileY;
-	private short unknown; // Truly unknown
+	private short unknown; // uint8
 	private float damagePercentage;
 	private float damageEffectPercentage;
 	private float sourcePositionX;
 	private float sourcePositionY;
-	private short damageType;
-
-	public TileDamageUpdatePacket()
-	{}
+	private short damageType; // uint8
 
 	public TileDamageUpdatePacket(int tileX, int tileY, short unknown, float damagePercentage, float damageEffectPercentage, float sourcePositionX, float sourcePositionY, short damageType)
 	{
@@ -29,29 +26,22 @@ public class TileDamageUpdatePacket extends BasePacket
 		this.damageType = damageType;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 19;
-	}
-
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		tileX = stream.readInt32();
-		tileY = stream.readInt32();
-		unknown = stream.readUInt8();
-		damagePercentage = stream.readFloat();
-		damageEffectPercentage = stream.readFloat();
-		sourcePositionX = stream.readFloat();
-		sourcePositionY = stream.readFloat();
-		damageType = stream.readUInt8();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public int getTileX()
@@ -61,7 +51,7 @@ public class TileDamageUpdatePacket extends BasePacket
 
 	public int getTileY()
 	{
-		return tileY
+		return tileY;
 	}
 
 	public short getUnknown()

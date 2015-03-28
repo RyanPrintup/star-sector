@@ -1,31 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ModifyTileListPacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class ModifyTileListPacket implements BasePacket
 {
-	 // Todo
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
 
-	public ModifyTileListPacket()
-	{}
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
 
-	public ModifyTileListPacket()
-	{} // Non-Default Constructor
-
-	@Override
+    @Override
 	public byte getId()
 	{
 		return 25;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public void write()
-	{
 	}
 }

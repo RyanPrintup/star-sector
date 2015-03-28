@@ -1,10 +1,10 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
-import com.ryanprintup.starsector.PacketReader;
 import com.ryanprintup.starsector.datatypes.Variant;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ConnectionResponsePacket extends BasePacket
+public class ConnectionResponsePacket implements BasePacket
 {
 	private boolean success;
 	private long clientId; // VLQ
@@ -19,14 +19,10 @@ public class ConnectionResponsePacket extends BasePacket
 	private long numberOfSectors; // VLQ
 	private String sectorId;
 	private String sectorName;
-	private long sectorSeed; // int64
+	private long sectorSeed; // uint64
 	private String sectorPrefix;
 	private Variant parameters;
 	private Variant sectorConfig;
-	
-	public ConnectionResponsePacket()
-	{
-	}
 	
 	public ConnectionResponsePacket(boolean success, long clientId, String rejectionReason, boolean celestialInfoExists, int orbitalLevels, int chunkSize, int xyCoordinateMin, int xyCoordinateMax, int zCoordinateMin, int zCoordinateMax, long numberOfSectors, String sectorId, String sectorName, long sectorSeed, String sectorPrefix, Variant parameters, Variant sectorConfig)
 	{
@@ -48,43 +44,23 @@ public class ConnectionResponsePacket extends BasePacket
 		this.parameters = parameters;
 		this.sectorConfig = sectorConfig;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 1;
-	}
-	
-	@Override
-	public void read(PacketReader stream)
-	{
-		success = stream.readBoolean();
-		clientId = stream.readVLQ();
-		rejectionReason = stream.readString();
-		celestialInfoExists = stream.readBoolean();
-		orbitalLevels = stream.readInt32();
-		chunkSize = stream.readInt32();
-		xyCoordinateMin = stream.readInt32();
-		xyCoordinateMax = stream.readInt32();
-		zCoordinateMin = stream.readInt32();
-		zCoordinateMax = stream.readInt32();
-		numberOfSectors = stream.readVLQ();
-		sectorId = stream.readString();
-		sectorName = stream.readString();
-		sectorSeed = stream.readInt64();
-		sectorPrefix = stream.readString();
-		
-		try {
-			parameters = stream.readVariant();
-			sectorConfig = stream.readVariant();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public boolean success()

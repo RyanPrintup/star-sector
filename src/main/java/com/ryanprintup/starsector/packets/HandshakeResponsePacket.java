@@ -1,15 +1,12 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class HandshakeResponsePacket extends BasePacket
+public class HandshakeResponsePacket implements BasePacket
 {
 	private String claimResponse;
 	private String passwordHash;
-
-	public HandshakeResponsePacket()
-	{}
 
 	public HandshakeResponsePacket(String claimResponse, String passwordHash)
 	{
@@ -17,22 +14,22 @@ public class HandshakeResponsePacket extends BasePacket
 		this.claimResponse = claimResponse;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 9;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		claimResponse = stream.readString();
-		passwordHash = stream.readString();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public String getClaimResponse()

@@ -1,17 +1,14 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class TileLiquidUpdatePacket extends BasePacket
+public class TileLiquidUpdatePacket implements BasePacket
 {
 	private long tileX; // sVLQ
 	private long tileY; // sVLQ
-	private short unknown1; // Might be liquid level
-	private short unknown2; // Might be liquid type
-
-	public TileLiquidUpdatePacket()
-	{}
+	private short unknown1; // uint8
+	private short unknown2; // uint8
 
 	public TileLiquidUpdatePacket(long tileX, long tileY, short unknown1, short unknown2)
 	{
@@ -21,25 +18,22 @@ public class TileLiquidUpdatePacket extends BasePacket
 		this.unknown2 = unknown2;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 18;
-	}
-
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		tileX = stream.readSVLQ();
-		tileY = stream.readSVLQ();
-		unknown1 = stream.readUInt8();
-		unknown2 = stream.readUInt8();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public long getTileX()

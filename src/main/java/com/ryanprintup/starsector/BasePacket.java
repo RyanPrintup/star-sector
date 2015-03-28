@@ -1,7 +1,13 @@
 package com.ryanprintup.starsector;
 
-public abstract class BasePacket
+import com.ryanprintup.starsector.net.BufferStream;
+
+public interface BasePacket
 {
-    public abstract byte getId();
+    public void read(BufferStream stream);
+
+    public void write(BufferStream stream);
+
+    public byte getId();
 }
 

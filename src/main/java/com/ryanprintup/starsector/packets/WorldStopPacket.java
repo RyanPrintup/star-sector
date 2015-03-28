@@ -1,35 +1,33 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class WorldStopPacket extends BasePacket
+public class WorldStopPacket implements BasePacket
 {
 	private String status;
 
 	public WorldStopPacket(String status)
-	{}
-
-	public WorldStopPacket()
 	{
 		this.status = status;
 	}
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
 
 	@Override
 	public byte getId()
 	{
 		return 15;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		status = stream.readString();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public String getStatus() {

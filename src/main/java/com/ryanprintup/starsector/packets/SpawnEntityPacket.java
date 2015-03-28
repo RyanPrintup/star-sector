@@ -1,31 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class SpawnEntityPacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class SpawnEntityPacket implements BasePacket
 {
-	// Todo
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
 
-	public SpawnEntityPacket()
-	{}
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
 
-	public SpawnEntityPacket()
-	{} // Non-Default Constructor
-
-	@Override
+    @Override
 	public byte getId()
 	{
 		return 29;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public void write()
-	{
 	}
 }

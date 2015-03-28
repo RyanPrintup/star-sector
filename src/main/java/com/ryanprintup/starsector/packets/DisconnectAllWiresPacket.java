@@ -1,29 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class DisconnectAllWiresPacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class DisconnectAllWiresPacket implements BasePacket
 {
-	// TODO
-	
-	public DisconnectAllWiresPacket()
-	{
-	}
-	
-	@Override
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 32;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public void write()
-	{
 	}
 }

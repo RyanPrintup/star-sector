@@ -1,19 +1,28 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ProtocolVersionPacket extends BasePacket
+public class ProtocolVersionPacket implements BasePacket
 {
 	private long protocolVersionNumber; // uint32
-
-	public ProtocolVersionPacket()
-	{}
 
 	public ProtocolVersionPacket(long protocolVersionNumber)
 	{
 		this.protocolVersionNumber = protocolVersionNumber;
 	}
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
 
 	@Override
 	public byte getId()
@@ -21,20 +30,8 @@ public class ProtocolVersionPacket extends BasePacket
 		return 0;
 	}
 
-	@Override
-	public void read(PacketReader stream)
-	{
-		protocolVersionNumber = stream.readUInt32();
-	}
-
-	@Override
-	public void write()
-	{
-	}
-
 	public long getProtocolVersionNumber()
 	{
 		return protocolVersionNumber;
 	}
-
 }

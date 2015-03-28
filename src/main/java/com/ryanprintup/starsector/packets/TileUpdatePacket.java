@@ -1,17 +1,14 @@
 package com.ryanprintup.starsector.packets;
 
+import com.ryanprintup.starsector.BasePacket;
 import com.ryanprintup.starsector.datatypes.NetTile;
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class TileUpdatePacket extends BasePacket
+public class TileUpdatePacket implements BasePacket
 {
 	private long tileX; // sVLQ
 	private long tileY; // sVLQ
 	private NetTile tile;
-
-	public TileUpdatePacket()
-	{}
 
 	public TileUpdatePacket(long tileX, long tileY, NetTile tile)
 	{
@@ -20,24 +17,22 @@ public class TileUpdatePacket extends BasePacket
 		this.tile = tile;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 17;
-	}
-
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		tileX = stream.readSVLQ();
-		tileY = stream.readSVLQ();
-		//tile = stream.readNetTile();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public long getTileX()

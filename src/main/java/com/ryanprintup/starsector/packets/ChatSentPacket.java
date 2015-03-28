@@ -1,39 +1,35 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ChatSentPacket extends BasePacket
+public class ChatSentPacket implements BasePacket
 {
 	private String message;
-	private short channel;
-	
-	public ChatSentPacket()
-	{
-	}
+	private short channel; // uint8
 	
 	public ChatSentPacket(String message, short channel)
 	{
 		this.message = message;
 		this.channel = channel;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 11;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		message = stream.readString();
-		channel = stream.readUInt8();
-	}
-
-	@Override
-	public byte[] write()
-	{
 	}
 	
 	public String getMessage()

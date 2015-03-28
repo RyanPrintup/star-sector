@@ -1,18 +1,14 @@
 package com.ryanprintup.starsector.packets;
 
+import com.ryanprintup.starsector.BasePacket;
 import com.ryanprintup.starsector.datatypes.Variant;
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class EntityInteractResultPacket extends BasePacket
+public class EntityInteractResultPacket implements BasePacket
 {
-	private long clientId;
+	private long clientId; // uint32
 	private int entityId;
 	private Variant results;
-
-	public EntityInteractResultPacket()
-	{
-	}
 	
 	public EntityInteractResultPacket(long clientId, int entityId, Variant results)
 	{
@@ -20,29 +16,23 @@ public class EntityInteractResultPacket extends BasePacket
 		this.entityId = entityId;
 		this.results = results;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 24;
-	}
-	
-	@Override
-	public void read(PacketReader stream)
-	{
-		clientId = stream.readUInt32();
-		entityId = stream.readInt32();
-		
-		try {
-			results = stream.readVariant();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public long getClientId()

@@ -1,39 +1,35 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class EntityUpdatePacket extends BasePacket
+public class EntityUpdatePacket implements BasePacket
 {
 	private long entityId; //sVLQ
-	private short[] delta;
-	
-	public EntityUpdatePacket()
-	{
-	}
+	private short[] delta; // uint8[]
 	
 	public EntityUpdatePacket(long entityId, short[] delta)
 	{
 		this.entityId = entityId;
 		this.delta = delta;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 43;
-	}
-	
-	@Override
-	public void read(PacketReader stream)
-	{
-		entityId = stream.readSVLQ();
-		delta = stream.readUInt8Array();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public long getEntityId()

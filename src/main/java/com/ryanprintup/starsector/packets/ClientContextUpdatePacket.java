@@ -1,36 +1,33 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ClientContextUpdatePacket extends BasePacket
+public class ClientContextUpdatePacket implements BasePacket
 {
-	private short[] clientContextData;
-	
-	public ClientContextUpdatePacket()
-	{
-	}
+	private short[] clientContextData; // uint8[]
 	
 	public ClientContextUpdatePacket(short[] clientContextData)
 	{
 		this.clientContextData = clientContextData;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 13;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		clientContextData = stream.readUInt8Array();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 	
 	public short[] getClientContextData()

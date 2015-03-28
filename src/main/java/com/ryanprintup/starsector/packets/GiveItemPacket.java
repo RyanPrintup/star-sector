@@ -1,18 +1,14 @@
 package com.ryanprintup.starsector.packets;
 
+import com.ryanprintup.starsector.BasePacket;
 import com.ryanprintup.starsector.datatypes.Variant;
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class GiveItemPacket extends BasePacket
+public class GiveItemPacket implements BasePacket
 {
 	private String itemName;
 	private long count; // VLQ
 	private Variant itemProperties;
-	
-	public GiveItemPacket()
-	{
-	}
 	
 	public GiveItemPacket(String itemName, long count, Variant itemProperties)
 	{
@@ -20,29 +16,23 @@ public class GiveItemPacket extends BasePacket
 		this.count = count;
 		this.itemProperties = itemProperties;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 21;
-	}
-	
-	@Override
-	public void read(PacketReader stream)
-	{
-		itemName = stream.readString();
-		count = stream.readVLQ();
-		
-		try {
-			itemProperties = stream.readVariant();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public String getItemName()

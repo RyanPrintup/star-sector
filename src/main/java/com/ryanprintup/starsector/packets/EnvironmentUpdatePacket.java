@@ -1,29 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class EnvironmentUpdatePacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class EnvironmentUpdatePacket implements BasePacket
 {
-	// TODO
-	
-	public EnvironmentUpdatePacket()
-	{
-	}
-	
-	@Override
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 23;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public void write()
-	{
 	}
 }

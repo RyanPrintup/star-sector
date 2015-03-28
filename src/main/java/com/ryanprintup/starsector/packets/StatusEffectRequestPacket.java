@@ -1,17 +1,15 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.datatypes.Variant;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class StatusEffectRequestPacket extends BasePacket
+public class StatusEffectRequestPacket implements BasePacket
 {
-	private long unknown1; // sVLQ, possibly entity ID
+	private long unknown1; // sVLQ
 	private String statusEffectName;
-	private Variant unknown2; // Possibly the parameters to the status effect
+	private Variant unknown2;
 	private float multiplier;
-
-	public StatusEffectRequestPacket()
-	{}
 
 	public StatusEffectRequestPacket(long unknown1, String statusEffectName, Variant unknown2, float multiplier)
 	{
@@ -21,24 +19,22 @@ public class StatusEffectRequestPacket extends BasePacket
 		this.multiplier = multiplier;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 46;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		unknown1 = stream.readSVLQ();
-		statusEffectName = stream.readString();
-		unknown2 = stream.readVariant();
-		multiplier = stream.readFloat();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public long getUnknown1()

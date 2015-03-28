@@ -1,18 +1,15 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ChatRecievedPacket extends BasePacket
+public class ChatRecievedPacket implements BasePacket
 {
-	private short channel;
+	private short channel; // uint8
 	private String world;
-	private long clientId;
+	private long clientId; // uint32
 	private String name;
 	private String message;
-	
-	public ChatRecievedPacket()
-	{
-	}
 	
 	public ChatRecievedPacket(short channel, String world, long clientId, String name, String message)
 	{
@@ -22,8 +19,20 @@ public class ChatRecievedPacket extends BasePacket
 		this.name = name;
 		this.message = message;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 4;

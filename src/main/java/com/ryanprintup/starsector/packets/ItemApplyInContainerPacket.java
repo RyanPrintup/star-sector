@@ -1,31 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ItemApplyInContainerPacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class ItemApplyInContainerPacket implements BasePacket
 {
-	// Todo
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
 
-	public ItemApplyInContainerPacket()
-	{}
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
 
-	public ItemApplyInContainerPacket()
-	{} // Non-Default Constructor
-
-	@Override
+    @Override
 	public byte getId()
 	{
 		return 36;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public void write()
-	{
 	}
 }

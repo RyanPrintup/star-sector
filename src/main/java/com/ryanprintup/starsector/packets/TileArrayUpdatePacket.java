@@ -1,19 +1,16 @@
 package com.ryanprintup.starsector.packets;
 
+import com.ryanprintup.starsector.BasePacket;
 import com.ryanprintup.starsector.datatypes.NetTile;
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class TileArrayUpdatePacket extends BasePacket
+public class TileArrayUpdatePacket implements BasePacket
 {
 	private long tileX; // sVLQ
 	private long tileY; // sVLQ
 	private long width; // VLQ
 	private long height; // VLQ
-	private NetTile tiles; // NetTiles[][]? or NetTiles[]? I don't know, verify please
-
-	public TileArrayUpdatePacket()
-	{}
+	private NetTile tiles;
 
 	public TileArrayUpdatePacket(long tileX, long tileY, long width, long height, NetTile tiles)
 	{
@@ -24,20 +21,17 @@ public class TileArrayUpdatePacket extends BasePacket
 		this.tiles = tiles;
 	}
 
-	@Override
-	public void read(PacketReader stream)
-	{
-		tileX = stream.readSVLQ();
-		tileY = stream.readSVLQ();
-		width = stream.readVLQ();
-		height = stream.readVLQ();
-		//tiles = stream.readNetTile(); Method missing?
-	}
+    @Override
+    public void read(BufferStream stream)
+    {
 
-	@Override
-	public void write()
-	{
-	}
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
 
 	@Override
 	public byte getId()

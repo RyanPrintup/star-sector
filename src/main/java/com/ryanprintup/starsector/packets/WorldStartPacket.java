@@ -1,27 +1,25 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.datatypes.Variant;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class WorldStartPacket extends BasePacket
+public class WorldStartPacket implements BasePacket
 {
 	private Variant planet;
 	private Variant worldStructure;
-	private short[] sky;
-	private short[] serverWeather;
+	private short[] sky; // uint8[]
+	private short[] serverWeather; // uint8[]
 	private float spawnX;
 	private float spawnY;
 	private Variant worldProperties;
-	private long clientId; // Uint32
+	private long clientId; // uint32
 	private boolean local;
 
-	public WorldStartPacket()
-	{}
-
-	public WorldStartPacket()
+	public WorldStartPacket(Variant planet, Variant worldStructure, short[] sky, short[] serverWeather, float spawnX, float spawnY, Variant worldProperties, long clientId, boolean local)
 	{
 		this.planet = planet;
-		this.worldStructure;
+		this.worldStructure = worldStructure;
 		this.sky = sky;
 		this.serverWeather = serverWeather;
 		this.spawnX = spawnX;
@@ -31,30 +29,22 @@ public class WorldStartPacket extends BasePacket
 		this.local = local;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 14;
-	}
-
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		planet = stream.readVariant();
-		worldStructure = stream.readVariant();
-		sky = stream.readUInt8Array();
-		serverWeather = stream.readUInt8Array();
-		spawnX = stream.readFloat();
-		spawnY = stream.readFloat();
-		worldProperties = stream.readVariant();
-		clientId = stream.readUInt32();
-		local = stream.readBoolean();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public Variant getPlanet()

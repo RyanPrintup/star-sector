@@ -1,37 +1,34 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class UniversalTimeUpdatePacket extends BasePacket
+public class UniversalTimeUpdatePacket implements BasePacket
 {
 	private long time; // sVLQ
-
-	public UniversalTimeUpdatePacket()
-	{}
 
 	public UniversalTimeUpdatePacket(long time)
 	{
 		this.time = time;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 5;
 	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		time = stream.readSVLQ();
-	}
-
-	@Override
-	public void write()
-	{
-	}
-
 
 	public long getTime()
 	{

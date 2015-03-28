@@ -1,29 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class DamageTilePacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class DamageTilePacket implements BasePacket
 {
-	// TODO
-	
-	public DamageTilePacket()
-	{
-	}
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
 
-	@Override
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 26;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public void write()
-	{
 	}
 }

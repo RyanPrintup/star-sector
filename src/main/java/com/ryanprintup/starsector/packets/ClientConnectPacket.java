@@ -1,23 +1,19 @@
 package com.ryanprintup.starsector.packets;
 
+import com.ryanprintup.starsector.BasePacket;
 import com.ryanprintup.starsector.datatypes.Variant;
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ClientConnectPacket extends BasePacket
+public class ClientConnectPacket implements BasePacket
 {
-	private short[] assetDigest;
+	private short[] assetDigest; // uint8[]
 	private Variant claim;
 	private boolean UUIDFlag;
-	private short[] UUID;
+	private short[] UUID; // uint8[16]
 	private String playerName;
 	private String species;
-	private short[] shipworld;
+	private short[] shipworld; // uint8[]
 	private String account;
-	
-	public ClientConnectPacket()
-	{
-	}
 	
 	public ClientConnectPacket(short[] assetDigest, Variant claim, boolean UUIDFlag, short[] UUID, String playerName, String species, short[] shipworld, String account)
 	{
@@ -30,41 +26,23 @@ public class ClientConnectPacket extends BasePacket
 		this.shipworld = shipworld;
 		this.account = account;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 7;
-	}
-	
-	@Override
-	public void read(PacketReader stream)
-	{
-		assetDigest = stream.readUInt8Array();
-		
-		try {
-			claim = stream.readVariant();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		UUIDFlag = stream.readBoolean();
-		
-		if (UUIDFlag) {
-			UUID = stream.readUInt8Array(16);
-		}
-		
-		playerName = stream.readString();
-		species = stream.readString();
-		shipworld = stream.readUInt8Array();
-		account = stream.readString();
-		
-	}
-
-	@Override
-	public byte[] write()
-	{
-		return null;
 	}
 	
 	public short[] assetDigest()

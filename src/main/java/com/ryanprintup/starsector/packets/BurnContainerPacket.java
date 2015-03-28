@@ -1,20 +1,29 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class BurnContainerPacket extends BasePacket
+public class BurnContainerPacket implements BasePacket
 {
 	private long entityId; // sVLQ
-	
-	public BurnContainerPacket()
-	{
-	}
-	
+
 	public BurnContainerPacket(long entityId)
 	{
 		this.entityId = entityId;
 	}
-	
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{

@@ -1,36 +1,33 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ClientDisconnectPacket extends BasePacket
+public class ClientDisconnectPacket implements BasePacket
 {
-	private short unknown;
-	
-	public ClientDisconnectPacket()
-	{
-	}
+	private short unknown; // uint8
 	
 	public ClientDisconnectPacket(short unknown)
 	{
 		this.unknown = unknown;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 8;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		unknown = stream.readUInt8();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 	
 	public short getUnknown()

@@ -1,36 +1,34 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class HeartbeatPacket extends BasePacket
+public class HeartbeatPacket implements BasePacket
 {
 	private long currentStep; // VLQ
 
-	public HeartbeatPacket()
-	{}
-
 	public HeartbeatPacket(long currentStep)
 	{
-		this.currentStep = currentStep
+		this.currentStep = currentStep;
 	}
 
-	@Override
-	public byte getId()
-	{
-		return 48;
-	}
+    @Override
+    public void read(BufferStream stream)
+    {
 
-	@Override
-	public void read(PacketReader stream)
-	{
-		currentStep = stream.readVLQ();
-	}
+    }
 
-	@Override
-	public void write()
-	{
-	}
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public byte getId()
+    {
+        return 48;
+    }
 
 	public long getCurrentStep()
 	{

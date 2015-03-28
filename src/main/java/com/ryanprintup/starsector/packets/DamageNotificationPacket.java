@@ -1,24 +1,35 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class DamageNotificationPacket extends BasePacket
+public class DamageNotificationPacket implements BasePacket
 {
+    public enum DamageKind
+    {
+        NORMAL,
+        SHIELD,
+        ENERGY
+    }
+
+    public enum HitResultKind
+    {
+        NONE,
+        HIT,
+        KILL
+    }
+
 	private long causingEntityId; // sVLQ
 	private long targetEntityId; // sVLQ
-	private long positionX; // sVLQ
-	private long positionY; // sVLQ
+	private long positionX; // sVLQ, divided by 100 when read, multiplied by 100 when written
+	private long positionY; // sVLQ, divided by 100 when read, multiplied by 100 when written
 	private long damage; // sVLQ
-	private int damageKind;
+	private short damageKind; // uint8
 	private String damageSourceKind;
 	private String targetMaterialKind;
-	private short hitResultKind;
+	private short hitResultKind; // uint8
 	
-	public DamageNotificationPacket()
-	{
-	}
-	
-	public DamageNotificationPacket(long casuingEntityId, long targetEntityId, long positionX, long positionY, int damageKind, String damageSourceKind, String targetMaterialKind, short hitResultKind)
+	public DamageNotificationPacket(long casuingEntityId, long targetEntityId, long positionX, long positionY, long damage, short damageKind, String damageSourceKind, String targetMaterialKind, short hitResultKind)
 	{
 		this.causingEntityId = casuingEntityId;
 		this.targetEntityId = targetEntityId;
@@ -30,6 +41,18 @@ public class DamageNotificationPacket extends BasePacket
 		this.targetMaterialKind = targetMaterialKind;
 		this.hitResultKind = hitResultKind;
 	}
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
 
 	@Override
 	public byte getId()

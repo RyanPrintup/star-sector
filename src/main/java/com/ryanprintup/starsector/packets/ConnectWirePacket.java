@@ -1,31 +1,26 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
-import com.ryanprintup.starsector.PacketWriter;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class ConnectWirePacket extends BasePacket
+/**
+ * Not fully understood yet.
+ */
+public class ConnectWirePacket implements BasePacket
 {
-	// TODO
-	
-	public ConnectWirePacket()
-	{
-	}
-	
-	@Override
+    @Override
+    public void read(BufferStream stream)
+    {
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 31;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-	}
-
-	@Override
-	public byte[] write()
-	{
-		return null;
 	}
 }

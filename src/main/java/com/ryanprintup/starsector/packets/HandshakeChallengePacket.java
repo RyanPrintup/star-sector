@@ -1,42 +1,37 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class HandshakeChallengePacket extends BasePacket
+public class HandshakeChallengePacket implements BasePacket
 {
 	private String claimMessage;
 	private String salt;
 	private int roundCount;
 
-
-	public HandshakeCallengePacket()
-	{}
-
-	public HandshakeCallengePacket(String claimMessage, String salt, int roundCount)
+	public HandshakeChallengePacket(String claimMessage, String salt, int roundCount)
 	{
 		this.claimMessage = claimMessage;
 		this.salt = salt;
 		this.roundCount = roundCount;
 	}
 
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
 	@Override
 	public byte getId()
 	{
 		return 3;
-	}
-
-	@Override
-	public void read(PacketReader stream)
-	{
-		claimMessage = stream.readString();
-		salt = stream.readString();
-		roundCount = stream.readString();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public String getClaimMessage()

@@ -1,39 +1,35 @@
 package com.ryanprintup.starsector.packets;
 
-import com.ryanprintup.starsector.Packet;
-import com.ryanprintup.starsector.PacketReader;
+import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.net.BufferStream;
 
-public class EntityDestroyPacket extends BasePacket
+public class EntityDestroyPacket implements BasePacket
 {
 	private long entityId; // sVLQ
 	private boolean death;
-	
-	public EntityDestroyPacket()
-	{
-	}
 	
 	public EntityDestroyPacket(long entityId, boolean death)
 	{
 		this.entityId = entityId;
 		this.death = death;
 	}
-	
-	@Override
+
+    @Override
+    public void read(BufferStream stream)
+    {
+
+    }
+
+    @Override
+    public void write(BufferStream stream)
+    {
+
+    }
+
+    @Override
 	public byte getId()
 	{
 		return 44;
-	}
-	
-	@Override
-	public void read(PacketReader stream)
-	{
-		entityId = stream.readSVLQ();
-		death = stream.readBoolean();
-	}
-
-	@Override
-	public void write()
-	{
 	}
 
 	public long getEntityId()
