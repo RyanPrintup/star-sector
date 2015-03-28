@@ -8,18 +8,24 @@ public class EntityCreatePacket implements BasePacket
 	private short entityType; // uint8
 	private short[] storeData; // uint8[]
 	private long entityId; //sVLQ
-	
-	public EntityCreatePacket(short entityType, short[] storeData, long entityId)
+
+    public EntityCreatePacket()
+    {
+    }
+
+    public EntityCreatePacket(short entityType, short[] storeData, long entityId)
 	{
 		this.entityType = entityType;
-		this.storeData = storeData;
-		this.entityId = entityId;
+		this.storeData  = storeData;
+		this.entityId   = entityId;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        entityType = stream.readUInt8();
+        storeData  = stream.readUInt8Array();
+        entityId   = stream.readSVLQ();
     }
 
     @Override

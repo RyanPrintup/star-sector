@@ -7,7 +7,11 @@ public class RequestDropPacket implements BasePacket
 {
 	private long entityId; // sVLQ
 
-	public RequestDropPacket(long entityId)
+    public RequestDropPacket()
+    {
+    }
+
+    public RequestDropPacket(long entityId)
 	{
 		this.entityId = entityId;
 	}
@@ -15,7 +19,7 @@ public class RequestDropPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
     }
 
     @Override

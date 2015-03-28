@@ -10,20 +10,28 @@ public class ChatRecievedPacket implements BasePacket
 	private long clientId; // uint32
 	private String name;
 	private String message;
-	
-	public ChatRecievedPacket(short channel, String world, long clientId, String name, String message)
+
+    public ChatRecievedPacket()
+    {
+    }
+
+    public ChatRecievedPacket(short channel, String world, long clientId, String name, String message)
 	{
-		this.channel = channel;
-		this.world = world;
+		this.channel  = channel;
+		this.world    = world;
 		this.clientId = clientId;
-		this.name = name;
-		this.message = message;
+		this.name     = name;
+		this.message  = message;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        channel  = stream.readUInt8();
+        world    = stream.readString();
+        clientId = stream.readUInt32();
+        name     = stream.readString();
+        message  = stream.readString();
     }
 
     @Override

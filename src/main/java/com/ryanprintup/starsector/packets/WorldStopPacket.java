@@ -7,7 +7,11 @@ public class WorldStopPacket implements BasePacket
 {
 	private String status;
 
-	public WorldStopPacket(String status)
+    public WorldStopPacket()
+    {
+    }
+
+    public WorldStopPacket(String status)
 	{
 		this.status = status;
 	}
@@ -15,7 +19,7 @@ public class WorldStopPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        status = stream.readString();
     }
 
     @Override

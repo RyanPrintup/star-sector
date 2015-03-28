@@ -7,17 +7,22 @@ public class EntityUpdatePacket implements BasePacket
 {
 	private long entityId; //sVLQ
 	private short[] delta; // uint8[]
-	
+
+    public EntityUpdatePacket()
+    {
+    }
+
 	public EntityUpdatePacket(long entityId, short[] delta)
 	{
 		this.entityId = entityId;
-		this.delta = delta;
+		this.delta    = delta;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
+        delta    = stream.readUInt8Array();
     }
 
     @Override

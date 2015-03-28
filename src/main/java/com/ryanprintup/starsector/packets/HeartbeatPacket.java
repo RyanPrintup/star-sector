@@ -12,10 +12,14 @@ public class HeartbeatPacket implements BasePacket
 		this.currentStep = currentStep;
 	}
 
+    public HeartbeatPacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {
-
+        currentStep = stream.readVLQ();
     }
 
     @Override

@@ -6,8 +6,12 @@ import com.ryanprintup.starsector.net.BufferStream;
 public class ClientContextUpdatePacket implements BasePacket
 {
 	private short[] clientContextData; // uint8[]
-	
-	public ClientContextUpdatePacket(short[] clientContextData)
+
+    public ClientContextUpdatePacket()
+    {
+    }
+
+    public ClientContextUpdatePacket(short[] clientContextData)
 	{
 		this.clientContextData = clientContextData;
 	}
@@ -15,7 +19,7 @@ public class ClientContextUpdatePacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        clientContextData = stream.readUInt8Array();
     }
 
     @Override

@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class EnvironmentUpdatePacket implements BasePacket
 {
+    public EnvironmentUpdatePacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

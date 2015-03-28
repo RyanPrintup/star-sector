@@ -7,7 +7,11 @@ public class StopCraftingInContainerPacket implements BasePacket
 {
 	private long entityId; // sVLQ
 
-	public StopCraftingInContainerPacket(long entityId)
+    public StopCraftingInContainerPacket()
+    {
+    }
+
+    public StopCraftingInContainerPacket(long entityId)
 	{
 		this.entityId = entityId;
 	}
@@ -15,7 +19,7 @@ public class StopCraftingInContainerPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
     }
 
     @Override

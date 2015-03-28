@@ -7,7 +7,11 @@ public class UniversalTimeUpdatePacket implements BasePacket
 {
 	private long time; // sVLQ
 
-	public UniversalTimeUpdatePacket(long time)
+    public UniversalTimeUpdatePacket()
+    {
+    }
+
+    public UniversalTimeUpdatePacket(long time)
 	{
 		this.time = time;
 	}
@@ -15,7 +19,7 @@ public class UniversalTimeUpdatePacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        time = stream.readSVLQ();
     }
 
     @Override

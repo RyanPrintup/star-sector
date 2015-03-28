@@ -30,17 +30,23 @@ public class WarpCommandPacket implements BasePacket
 	private int worldCoordinates; // To-do datatype
 	private String playerName;
 
-	public WarpCommandPacket(long warpType, int worldCoordinates, String playerName)
+    public WarpCommandPacket()
+    {
+    }
+
+    public WarpCommandPacket(long warpType, int worldCoordinates, String playerName)
 	{
-		this.warpType = warpType;
+		this.warpType         = warpType;
 		this.worldCoordinates = worldCoordinates;
-		this.playerName = playerName;
+		this.playerName       = playerName;
     }
 
     @Override
     public void read(BufferStream stream)
     {
-
+        warpType         = stream.readUInt32();
+        worldCoordinates = stream.readInt32();
+        playerName       = stream.readString();
     }
 
     @Override

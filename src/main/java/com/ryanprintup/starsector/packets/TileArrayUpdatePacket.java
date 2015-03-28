@@ -12,19 +12,27 @@ public class TileArrayUpdatePacket implements BasePacket
 	private long height; // VLQ
 	private NetTile tiles;
 
-	public TileArrayUpdatePacket(long tileX, long tileY, long width, long height, NetTile tiles)
+    public TileArrayUpdatePacket()
+    {
+    }
+
+    public TileArrayUpdatePacket(long tileX, long tileY, long width, long height, NetTile tiles)
 	{
-		this.tileX = tileX;
-		this.tileY = tileY;
-		this.width = width;
+		this.tileX  = tileX;
+		this.tileY  = tileY;
+		this.width  = width;
 		this.height = height;
-		this.tiles = tiles;
+		this.tiles  = tiles;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        tileX  = stream.readSVLQ();
+        tileY  = stream.readSVLQ();
+        width  = stream.readVLQ();
+        height = stream.readVLQ();
+        tiles  = stream.readNetTile();
     }
 
     @Override

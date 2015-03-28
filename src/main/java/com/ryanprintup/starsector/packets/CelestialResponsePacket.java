@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class CelestialResponsePacket implements BasePacket
 {
+    public CelestialResponsePacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

@@ -7,7 +7,11 @@ public class OpenContainerPacket implements BasePacket
 {
 	private long entityId; // sVLQ
 
-	public OpenContainerPacket(long entityId)
+    public OpenContainerPacket()
+    {
+    }
+
+    public OpenContainerPacket(long entityId)
 	{
 		this.entityId = entityId;
 	}
@@ -15,7 +19,7 @@ public class OpenContainerPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
     }
 
     @Override

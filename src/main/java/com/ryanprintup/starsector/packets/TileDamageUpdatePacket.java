@@ -14,22 +14,33 @@ public class TileDamageUpdatePacket implements BasePacket
 	private float sourcePositionY;
 	private short damageType; // uint8
 
-	public TileDamageUpdatePacket(int tileX, int tileY, short unknown, float damagePercentage, float damageEffectPercentage, float sourcePositionX, float sourcePositionY, short damageType)
+    public TileDamageUpdatePacket()
+    {
+    }
+
+    public TileDamageUpdatePacket(int tileX, int tileY, short unknown, float damagePercentage, float damageEffectPercentage, float sourcePositionX, float sourcePositionY, short damageType)
 	{
-		this.tileX = tileX;
-		this.tileY = tileY;
-		this.unknown = unknown;
-		this.damagePercentage = damagePercentage;
+		this.tileX                  = tileX;
+		this.tileY                  = tileY;
+		this.unknown                = unknown;
+		this.damagePercentage       = damagePercentage;
 		this.damageEffectPercentage = damageEffectPercentage;
-		this.sourcePositionX = sourcePositionX;
-		this.sourcePositionY = sourcePositionY;
-		this.damageType = damageType;
+		this.sourcePositionX        = sourcePositionX;
+		this.sourcePositionY        = sourcePositionY;
+		this.damageType             = damageType;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        tileX                  = stream.readInt32();
+        tileY                  = stream.readInt32();
+        unknown                = stream.readUInt8();
+        damagePercentage       = stream.readFloat();
+        damageEffectPercentage = stream.readFloat();
+        sourcePositionX        = stream.readFloat();
+        sourcePositionY        = stream.readFloat();
+        damageType             = stream.readUInt8();
     }
 
     @Override

@@ -6,8 +6,12 @@ import com.ryanprintup.starsector.net.BufferStream;
 public class ClearContainerPacket implements BasePacket
 {
 	private long entityId; // sVLQ
-	
-	public ClearContainerPacket(long entityId)
+
+    public ClearContainerPacket()
+    {
+    }
+
+    public ClearContainerPacket(long entityId)
 	{
 		this.entityId = entityId;
 	}
@@ -15,7 +19,7 @@ public class ClearContainerPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
     }
 
     @Override

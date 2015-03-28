@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class EntityInteractPacket implements BasePacket
 {
+    public EntityInteractPacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

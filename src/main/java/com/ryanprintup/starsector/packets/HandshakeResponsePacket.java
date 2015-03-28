@@ -8,16 +8,21 @@ public class HandshakeResponsePacket implements BasePacket
 	private String claimResponse;
 	private String passwordHash;
 
-	public HandshakeResponsePacket(String claimResponse, String passwordHash)
+    public HandshakeResponsePacket()
+    {
+    }
+
+    public HandshakeResponsePacket(String claimResponse, String passwordHash)
 	{
-		this.passwordHash = passwordHash;
+		this.passwordHash  = passwordHash;
 		this.claimResponse = claimResponse;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        passwordHash  = stream.readString();
+        claimResponse = stream.readString();
     }
 
     @Override

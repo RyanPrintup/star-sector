@@ -10,10 +10,14 @@ public class TileLiquidUpdatePacket implements BasePacket
 	private short unknown1; // uint8
 	private short unknown2; // uint8
 
-	public TileLiquidUpdatePacket(long tileX, long tileY, short unknown1, short unknown2)
+    public TileLiquidUpdatePacket()
+    {
+    }
+
+    public TileLiquidUpdatePacket(long tileX, long tileY, short unknown1, short unknown2)
 	{
-		this.tileX = tileX;
-		this.tileY = tileY;
+		this.tileX    = tileX;
+		this.tileY    = tileY;
 		this.unknown1 = unknown1;
 		this.unknown2 = unknown2;
 	}
@@ -21,7 +25,10 @@ public class TileLiquidUpdatePacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        tileX    = stream.readSVLQ();
+        tileY    = stream.readSVLQ();
+        unknown1 = stream.readUInt8();
+        unknown2 = stream.readUInt8();
     }
 
     @Override

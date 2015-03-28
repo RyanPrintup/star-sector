@@ -7,7 +7,11 @@ public class WorldClientStateUpdatePacket implements BasePacket
 {
 	private short[] delta; // uint8[]
 
-	public WorldClientStateUpdatePacket(short[] delta)
+    public WorldClientStateUpdatePacket()
+    {
+    }
+
+    public WorldClientStateUpdatePacket(short[] delta)
 	{
 		this.delta = delta;
 	}
@@ -15,7 +19,7 @@ public class WorldClientStateUpdatePacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        delta = stream.readUInt8Array();
     }
 
     @Override

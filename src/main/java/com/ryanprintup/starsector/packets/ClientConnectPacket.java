@@ -1,6 +1,7 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.StarSector;
 import com.ryanprintup.starsector.datatypes.Variant;
 import com.ryanprintup.starsector.net.BufferStream;
 
@@ -14,23 +15,44 @@ public class ClientConnectPacket implements BasePacket
 	private String species;
 	private short[] shipworld; // uint8[]
 	private String account;
-	
-	public ClientConnectPacket(short[] assetDigest, Variant claim, boolean UUIDFlag, short[] UUID, String playerName, String species, short[] shipworld, String account)
+
+    public ClientConnectPacket()
+    {
+    }
+
+    public ClientConnectPacket(short[] assetDigest, Variant claim, boolean UUIDFlag, short[] UUID, String playerName, String species, short[] shipworld, String account)
 	{
 		this.assetDigest = assetDigest;
-		this.claim = claim;
-		this.UUIDFlag = UUIDFlag;
-		this.UUID = UUID;
-		this.playerName = playerName;
-		this.species = species;
-		this.shipworld = shipworld;
-		this.account = account;
+		this.claim       = claim;
+		this.UUIDFlag    = UUIDFlag;
+		this.UUID        = UUID;
+		this.playerName  = playerName;
+		this.species     = species;
+		this.shipworld   = shipworld;
+		this.account     = account;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
+        assetDigest = stream.readUInt8Array();
 
+        try {
+            claim = stream.readVariant();
+        } catch (Exception e) {
+            StarSector.getServer().getConsole().error("Could not read variant from Stream. Error: " + e);
+            return;
+        }
+
+        UUIDFlag    = stream.readBoolean();
+        if (UUIDFlag) {
+            UUID = stream.readUByteArray(16);
+        }
+
+        playerName = stream.readString();
+        species    = stream.readString();
+        shipworld  = stream.readUInt8Array();
+        account    = stream.readString();
     }
 
     @Override

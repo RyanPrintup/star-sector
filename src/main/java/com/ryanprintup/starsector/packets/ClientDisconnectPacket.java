@@ -6,8 +6,12 @@ import com.ryanprintup.starsector.net.BufferStream;
 public class ClientDisconnectPacket implements BasePacket
 {
 	private short unknown; // uint8
-	
-	public ClientDisconnectPacket(short unknown)
+
+    public ClientDisconnectPacket()
+    {
+    }
+
+    public ClientDisconnectPacket(short unknown)
 	{
 		this.unknown = unknown;
 	}
@@ -15,7 +19,7 @@ public class ClientDisconnectPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        unknown = stream.readUInt8();
     }
 
     @Override

@@ -7,6 +7,10 @@ public class BurnContainerPacket implements BasePacket
 {
 	private long entityId; // sVLQ
 
+    public BurnContainerPacket()
+    {
+    }
+
 	public BurnContainerPacket(long entityId)
 	{
 		this.entityId = entityId;
@@ -15,7 +19,7 @@ public class BurnContainerPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
     }
 
     @Override

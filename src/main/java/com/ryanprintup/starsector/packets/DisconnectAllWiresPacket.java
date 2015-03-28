@@ -8,6 +8,11 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class DisconnectAllWiresPacket implements BasePacket
 {
+
+    public DisconnectAllWiresPacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

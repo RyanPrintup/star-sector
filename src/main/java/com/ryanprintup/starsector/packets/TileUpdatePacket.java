@@ -10,17 +10,23 @@ public class TileUpdatePacket implements BasePacket
 	private long tileY; // sVLQ
 	private NetTile tile;
 
-	public TileUpdatePacket(long tileX, long tileY, NetTile tile)
+    public TileUpdatePacket()
+    {
+    }
+
+    public TileUpdatePacket(long tileX, long tileY, NetTile tile)
 	{
 		this.tileX = tileX;
 		this.tileY = tileY;
-		this.tile = tile;
+		this.tile  = tile;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        tileX = stream.readSVLQ();
+        tileY = stream.readSVLQ();
+        tile  = stream.readNetTile();
     }
 
     @Override

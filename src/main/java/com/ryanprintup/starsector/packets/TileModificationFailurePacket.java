@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class TileModificationFailurePacket implements BasePacket
 {
+    public TileModificationFailurePacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

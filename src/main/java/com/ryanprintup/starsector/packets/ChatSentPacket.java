@@ -7,8 +7,12 @@ public class ChatSentPacket implements BasePacket
 {
 	private String message;
 	private short channel; // uint8
-	
-	public ChatSentPacket(String message, short channel)
+
+    public ChatSentPacket()
+    {
+    }
+
+    public ChatSentPacket(String message, short channel)
 	{
 		this.message = message;
 		this.channel = channel;
@@ -17,7 +21,8 @@ public class ChatSentPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        message = stream.readString();
+        channel = stream.readUInt8();
     }
 
     @Override

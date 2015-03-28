@@ -9,17 +9,23 @@ public class HandshakeChallengePacket implements BasePacket
 	private String salt;
 	private int roundCount;
 
-	public HandshakeChallengePacket(String claimMessage, String salt, int roundCount)
+    public HandshakeChallengePacket()
+    {
+    }
+
+    public HandshakeChallengePacket(String claimMessage, String salt, int roundCount)
 	{
 		this.claimMessage = claimMessage;
-		this.salt = salt;
-		this.roundCount = roundCount;
+		this.salt         = salt;
+		this.roundCount   = roundCount;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        claimMessage = stream.readString();
+        salt         = stream.readString();
+        roundCount   = stream.readInt32();
     }
 
     @Override

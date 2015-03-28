@@ -1,6 +1,7 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.StarSector;
 import com.ryanprintup.starsector.datatypes.Variant;
 import com.ryanprintup.starsector.net.BufferStream;
 
@@ -16,23 +17,41 @@ public class WorldStartPacket implements BasePacket
 	private long clientId; // uint32
 	private boolean local;
 
-	public WorldStartPacket(Variant planet, Variant worldStructure, short[] sky, short[] serverWeather, float spawnX, float spawnY, Variant worldProperties, long clientId, boolean local)
+    public WorldStartPacket()
+    {
+    }
+
+    public WorldStartPacket(Variant planet, Variant worldStructure, short[] sky, short[] serverWeather, float spawnX, float spawnY, Variant worldProperties, long clientId, boolean local)
 	{
-		this.planet = planet;
-		this.worldStructure = worldStructure;
-		this.sky = sky;
-		this.serverWeather = serverWeather;
-		this.spawnX = spawnX;
-		this.spawnY = spawnY;
+		this.planet          = planet;
+		this.worldStructure  = worldStructure;
+		this.sky             = sky;
+		this.serverWeather   = serverWeather;
+		this.spawnX          = spawnX;
+		this.spawnY          = spawnY;
 		this.worldProperties = worldProperties;
-		this.clientId = clientId;
-		this.local = local;
+		this.clientId        = clientId;
+		this.local           = local;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
+        try {
+            planet          = stream.readVariant();
+            worldStructure  = stream.readVariant();
+            worldProperties = stream.readVariant();
+        } catch (Exception e) {
+            StarSector.getServer().getConsole().error("Could not read variant from Stream. Error: " + e);
+            return;
+        }
 
+        sky           = stream.readUInt8Array();
+        serverWeather = stream.readUInt8Array();
+        spawnX        = stream.readFloat();
+        spawnY        = stream.readFloat();
+        clientId      = stream.readUInt32();
+        local         = stream.readBoolean();
     }
 
     @Override

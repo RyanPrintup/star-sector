@@ -7,17 +7,22 @@ public class EntityDestroyPacket implements BasePacket
 {
 	private long entityId; // sVLQ
 	private boolean death;
-	
-	public EntityDestroyPacket(long entityId, boolean death)
+
+    public EntityDestroyPacket()
+    {
+    }
+
+    public EntityDestroyPacket(long entityId, boolean death)
 	{
 		this.entityId = entityId;
-		this.death = death;
+		this.death    = death;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        entityId = stream.readSVLQ();
+        death    = stream.readBoolean();
     }
 
     @Override

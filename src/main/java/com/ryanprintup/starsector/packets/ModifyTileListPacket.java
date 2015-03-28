@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class ModifyTileListPacket implements BasePacket
 {
+    public ModifyTileListPacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

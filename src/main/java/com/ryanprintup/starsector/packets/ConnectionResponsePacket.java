@@ -1,6 +1,7 @@
 package com.ryanprintup.starsector.packets;
 
 import com.ryanprintup.starsector.BasePacket;
+import com.ryanprintup.starsector.StarSector;
 import com.ryanprintup.starsector.datatypes.Variant;
 import com.ryanprintup.starsector.net.BufferStream;
 
@@ -23,31 +24,58 @@ public class ConnectionResponsePacket implements BasePacket
 	private String sectorPrefix;
 	private Variant parameters;
 	private Variant sectorConfig;
-	
-	public ConnectionResponsePacket(boolean success, long clientId, String rejectionReason, boolean celestialInfoExists, int orbitalLevels, int chunkSize, int xyCoordinateMin, int xyCoordinateMax, int zCoordinateMin, int zCoordinateMax, long numberOfSectors, String sectorId, String sectorName, long sectorSeed, String sectorPrefix, Variant parameters, Variant sectorConfig)
+
+    public ConnectionResponsePacket()
+    {
+    }
+
+    public ConnectionResponsePacket(boolean success, long clientId, String rejectionReason, boolean celestialInfoExists, int orbitalLevels, int chunkSize, int xyCoordinateMin, int xyCoordinateMax, int zCoordinateMin, int zCoordinateMax, long numberOfSectors, String sectorId, String sectorName, long sectorSeed, String sectorPrefix, Variant parameters, Variant sectorConfig)
 	{
-		this.success = success;
-		this.clientId = clientId;
-		this.rejectionReason = rejectionReason;
+		this.success             = success;
+		this.clientId            = clientId;
+		this.rejectionReason     = rejectionReason;
 		this.celestialInfoExists = celestialInfoExists;
-		this.orbitalLevels = orbitalLevels;
-		this.chunkSize = chunkSize;
-		this.xyCoordinateMin = xyCoordinateMin;
-		this.xyCoordinateMax = xyCoordinateMax;
-		this.zCoordinateMin = zCoordinateMin;
-		this.zCoordinateMax = zCoordinateMax;
-		this.numberOfSectors = numberOfSectors;
-		this.sectorId = sectorId;
-		this.sectorName = sectorName;
-		this.sectorSeed = sectorSeed;
-		this.sectorPrefix = sectorPrefix;
-		this.parameters = parameters;
-		this.sectorConfig = sectorConfig;
+		this.orbitalLevels       = orbitalLevels;
+		this.chunkSize           = chunkSize;
+		this.xyCoordinateMin     = xyCoordinateMin;
+		this.xyCoordinateMax     = xyCoordinateMax;
+		this.zCoordinateMin      = zCoordinateMin;
+		this.zCoordinateMax      = zCoordinateMax;
+		this.numberOfSectors     = numberOfSectors;
+		this.sectorId            = sectorId;
+		this.sectorName          = sectorName;
+		this.sectorSeed          = sectorSeed;
+		this.sectorPrefix        = sectorPrefix;
+		this.parameters          = parameters;
+		this.sectorConfig        = sectorConfig;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
+        success             = stream.readBoolean();
+        clientId            = stream.readVLQ();
+        rejectionReason     = stream.readString();
+        celestialInfoExists = stream.readBoolean();
+        orbitalLevels       = stream.readInt32();
+        chunkSize           = stream.readInt32();
+        xyCoordinateMin     = stream.readInt32();
+        xyCoordinateMax     = stream.readInt32();
+        zCoordinateMin      = stream.readInt32();
+        zCoordinateMax      = stream.readInt32();
+        numberOfSectors     = stream.readVLQ();
+        sectorId            = stream.readString();
+        sectorName          = stream.readString();
+        sectorSeed          = stream.readUInt64();
+        sectorPrefix        = stream.readString();
+
+        try {
+            parameters   = stream.readVariant();
+            sectorConfig = stream.readVariant();
+        } catch (Exception e) {
+            StarSector.getServer().getConsole().error("Could not read variant from Stream. Error: " + e);
+            return;
+        }
 
     }
 

@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class ConnectWirePacket implements BasePacket
 {
+    public ConnectWirePacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

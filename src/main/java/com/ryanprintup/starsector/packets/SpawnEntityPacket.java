@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class SpawnEntityPacket implements BasePacket
 {
+    public SpawnEntityPacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

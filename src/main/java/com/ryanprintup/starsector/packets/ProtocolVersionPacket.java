@@ -7,7 +7,11 @@ public class ProtocolVersionPacket implements BasePacket
 {
 	private long protocolVersionNumber; // uint32
 
-	public ProtocolVersionPacket(long protocolVersionNumber)
+    public ProtocolVersionPacket()
+    {
+    }
+
+    public ProtocolVersionPacket(long protocolVersionNumber)
 	{
 		this.protocolVersionNumber = protocolVersionNumber;
 	}
@@ -15,7 +19,7 @@ public class ProtocolVersionPacket implements BasePacket
     @Override
     public void read(BufferStream stream)
     {
-
+        protocolVersionNumber = stream.readUInt32();
     }
 
     @Override

@@ -28,24 +28,36 @@ public class DamageNotificationPacket implements BasePacket
 	private String damageSourceKind;
 	private String targetMaterialKind;
 	private short hitResultKind; // uint8
-	
-	public DamageNotificationPacket(long casuingEntityId, long targetEntityId, long positionX, long positionY, long damage, short damageKind, String damageSourceKind, String targetMaterialKind, short hitResultKind)
+
+    public DamageNotificationPacket()
+    {
+    }
+
+    public DamageNotificationPacket(long casuingEntityId, long targetEntityId, long positionX, long positionY, long damage, short damageKind, String damageSourceKind, String targetMaterialKind, short hitResultKind)
 	{
-		this.causingEntityId = casuingEntityId;
-		this.targetEntityId = targetEntityId;
-		this.positionX = positionX;
-		this.positionY = positionY;
-		this.damage = damage;
-		this.damageKind = damageKind;
-		this.damageSourceKind = damageSourceKind;
+		this.causingEntityId    = casuingEntityId;
+		this.targetEntityId     = targetEntityId;
+		this.positionX          = positionX;
+		this.positionY          = positionY;
+		this.damage             = damage;
+		this.damageKind         = damageKind;
+		this.damageSourceKind   = damageSourceKind;
 		this.targetMaterialKind = targetMaterialKind;
-		this.hitResultKind = hitResultKind;
+		this.hitResultKind      = hitResultKind;
 	}
 
     @Override
     public void read(BufferStream stream)
     {
-
+        causingEntityId    = stream.readSVLQ();
+        targetEntityId     = stream.readSVLQ();
+        positionX          = stream.readSVLQ() / 100;
+        positionY          = stream.readSVLQ() / 100;
+        damage             = stream.readSVLQ();
+        damageKind         = stream.readUInt8();
+        damageSourceKind   = stream.readString();
+        targetMaterialKind = stream.readString();
+        hitResultKind      = stream.readUInt8();
     }
 
     @Override

@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class DamageTilePacket implements BasePacket
 {
+    public DamageTilePacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {

@@ -8,6 +8,10 @@ import com.ryanprintup.starsector.net.BufferStream;
  */
 public class SwapInContainerResultPacket implements BasePacket
 {
+    public SwapInContainerResultPacket()
+    {
+    }
+
     @Override
     public void read(BufferStream stream)
     {
