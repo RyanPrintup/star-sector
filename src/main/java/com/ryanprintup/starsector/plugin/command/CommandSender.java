@@ -1,4 +1,4 @@
-package com.ryanprintup.starsector.command;
+package com.ryanprintup.starsector.plugin.command;
 
 public interface CommandSender
 {
