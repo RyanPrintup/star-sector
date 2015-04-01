@@ -15,7 +15,10 @@ public final class StarSector
     public static final String VERSION       = MAJOR_VERSION + "." +
                                                MINOR_VERSION + "." +
                                                PATCH_VERSION +
-                                            ((!DEV_VERSION.isEmpty()) ? " " + DEV_VERSION : "");
+                                             (!DEV_VERSION.isEmpty() ? " " + DEV_VERSION : "");
+
+    public static final String STARBOUND_VERSION = "Upbeat Giraffe";
+    public static final String STARBOUND_BRANCH  = "Stable";
 
 	private static Server server;
 	
