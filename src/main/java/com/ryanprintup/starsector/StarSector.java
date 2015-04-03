@@ -1,6 +1,5 @@
 package com.ryanprintup.starsector;
 
-
 /**
  * Core class of the software that handles
  * Singleton instance of the server class
@@ -14,7 +13,7 @@ public final class StarSector
     public static final String DEV_VERSION   = "A";
     public static final String VERSION       = MAJOR_VERSION + "." +
                                                MINOR_VERSION + "." +
-                                               PATCH_VERSION +
+                                               PATCH_VERSION + " " +
                                                DEV_VERSION;
 
     public static final String STARBOUND_VERSION = "Upbeat Giraffe";
@@ -37,6 +36,7 @@ public final class StarSector
 		
 		StarSector.server = server;
 	}
+
 	public static Server getServer()
 	{
 		return server;

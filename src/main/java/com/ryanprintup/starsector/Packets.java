@@ -120,7 +120,7 @@ public enum Packets
 	{
 		return clazz;
 	}
-	
+
 	public Object newInstance() throws InstantiationException, IllegalAccessException
 	{
 		return clazz.newInstance();
